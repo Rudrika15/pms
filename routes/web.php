@@ -5,7 +5,7 @@ use App\Http\Controllers\PmsProjectController;
 use App\Http\Controllers\PmsTaskController;
 use App\Http\Controllers\PmsTeamController;
 use App\Http\Controllers\TeamController;
-use Illuminate\Container\Attributes\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
