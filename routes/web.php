@@ -5,11 +5,14 @@ use App\Http\Controllers\PmsProjectController;
 use App\Http\Controllers\PmsTaskController;
 use App\Http\Controllers\PmsTeamController;
 use App\Http\Controllers\TeamController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('admin.home');
 })->name('home');
+
+Auth::routes();
 
 // Project Crud
 Route::get('viewProject', [PmsProjectController::class, 'viewProject'])->name('viewProject');
