@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\PmsTask;
+use App\Models\PmsTeam;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PmsTaskController extends Controller
@@ -10,16 +12,34 @@ class PmsTaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($projectId,)
     {
-        $tasks = PmsTask::all();
-        return view('admin.tasks.index', compact('tasks'));
+        $id =  $projectId;
+        $toDo = pmsTask::where('project_id', $projectId)
+            ->where('status', 'to-do')
+            ->get();
+        $inProgress = pmsTask::where('project_id', $projectId)
+            ->where('status', 'in-progress')
+            ->get();
+        $done = pmsTask::where('project_id', $projectId)
+            ->where('status', 'done')
+            ->get();
+        $deployed = pmsTask::where('project_id', $projectId)
+            ->where('status', 'deployed')
+            ->get();
+        $completed = pmsTask::where('project_id', $projectId)
+            ->where('status', 'completed')
+            ->get();
+        return view('admin.tasks.index', compact('toDo', 'inProgress', 'done', 'deployed', 'completed', 'id'));
     }
 
     // Show form to create a new task
-    public function create()
+    public function create($projectId)
     {
-        return view('admin.tasks.create');
+
+
+        $teamMember = PmsTeam::where('project_id', $projectId)->with('user')->get();
+        return view('admin.tasks.create', compact('teamMember'));
     }
 
     // Store a new task
@@ -29,30 +49,26 @@ class PmsTaskController extends Controller
             'project_id' => 'required',
             'user_id' => 'required',
             'title' => 'required|string|max:255',
-            'detail' => 'required|string',
-            'status' => 'required|string',
             'priority' => 'required|in:low,medium,high',
-            'attachment' => 'nullable|file|mimes:jpg,png,pdf,doc,docx',
-            'deadline' => 'required|date',
+            'deadline' => 'date',
         ]);
 
         $pmsTask = new PmsTask();
-        $pmsTask->project_id = $request->project_id;  // Assign project_id
-        $pmsTask->user_id = $request->user_id;        // Assign user_id
-        $pmsTask->title = $request->title;            // Assign title
-        $pmsTask->detail = $request->detail;          // Assign detail
-        $pmsTask->status = $request->status;          // Assign status
-        $pmsTask->priority = $request->priority;      // Assign priority
-        $pmsTask->deadline = $request->deadline;      // Assign deadline
+        $pmsTask->project_id = $request->project_id;
+        $pmsTask->user_id = $request->user_id;
+        $pmsTask->title = $request->title;
+        $pmsTask->detail = $request->detail ?? '';
+        $pmsTask->status = $request->status ?? 'to-do';
+        $pmsTask->priority = $request->priority ?? 'low';
+        $pmsTask->deadline = $request->deadline ?? Carbon::now();
 
-        // Handle file upload
         if ($request->hasFile('attachment')) {
             $pmsTask->attachment = $request->file('attachment')->store('attachments');
         }
 
-        $pmsTask->save(); // Save the new task
+        $pmsTask->save();
 
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
+        return redirect()->route('tasks.index', $request->project_id)->with('success', 'Task created successfully.');
     }
 
     // Show form to edit a task
@@ -77,13 +93,13 @@ class PmsTaskController extends Controller
         ]);
 
         $pmsTask = PmsTask::findOrFail($id);
-        $pmsTask->project_id = $request->project_id;  // Update project_id
-        $pmsTask->user_id = $request->user_id;        // Update user_id
-        $pmsTask->title = $request->title;            // Update title
-        $pmsTask->detail = $request->detail;          // Update detail
-        $pmsTask->status = $request->status;          // Update status
-        $pmsTask->priority = $request->priority;      // Update priority
-        $pmsTask->deadline = $request->deadline;      // Update deadline
+        $pmsTask->project_id = $request->project_id;
+        $pmsTask->user_id = $request->user_id;
+        $pmsTask->title = $request->title;
+        $pmsTask->detail = $request->detail;
+        $pmsTask->status = $request->status;
+        $pmsTask->priority = $request->priority;
+        $pmsTask->deadline = $request->deadline;
 
         // Handle file upload
         if ($request->hasFile('attachment')) {
@@ -94,6 +110,17 @@ class PmsTaskController extends Controller
 
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
+
+    //update task status
+    public function updateStatus(Request $request, $taskId)
+    {
+        $task = pmsTask::findOrFail($taskId);
+        $task->status = $request->status; // Update status
+        $task->save();
+
+        return response()->json(['success' => true, 'message' => 'Task status updated successfully.']);
+    }
+
 
     // Delete a task
     public function destroy($id)

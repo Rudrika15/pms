@@ -2,61 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\pmsProject;
+use App\Models\PmsProject;
 use Illuminate\Http\Request;
 
 class PmsProjectController extends Controller
 {
-    public function addProject()
+    public function create()
     {
         return view('admin.project.create');
     }
 
-    public function postAddProject(Request $request)
+    public function store(Request $request)
     {
-        $pmsProject = new pmsProject();
-        $pmsProject->title = $request->title;
-        $pmsProject->detail = $request->detail;
-        $pmsProject->git_link = $request->git_link;
-        $pmsProject->status = $request->status;
-        $pmsProject->save();
+        $PmsProject = new PmsProject();
+        $PmsProject->title = $request->title;
+        $PmsProject->detail = $request->detail;
+        $PmsProject->git_link = $request->git_link;
+        $PmsProject->status = $request->status;
+        $PmsProject->save();
 
-        return redirect()->back()->with('success', 'Projcet Added Successfully');
+        return redirect()->route('projects.index')->with('success', 'Projcet Added Successfully');
     }
 
-    public function viewProject()
+    public function index()
     {
-        $project = pmsProject::all();
+        $project = PmsProject::all();
         return \view('admin.project.index', \compact('project'));
     }
 
-    public function editProject($id)
+    public function edit($id)
     {
-        $project = pmsProject::find($id);
+        $project = PmsProject::find($id);
         return view('admin.project.update', compact('project'));
     }
 
-    public function postEditProject(Request $request, $id)
+    public function update(Request $request, $id)
     {
 
-        $pmsProject = PmsProject::findOrFail($id);
+        $PmsProject = PmsProject::findOrFail($id);
 
-        $pmsProject->title = $request->title;
-        $pmsProject->detail = $request->detail;
-        $pmsProject->git_link = $request->git_link;
-        $pmsProject->status = $request->status;
+        $PmsProject->title = $request->title;
+        $PmsProject->detail = $request->detail;
+        $PmsProject->git_link = $request->git_link;
+        $PmsProject->status = $request->status;
 
-        $pmsProject->save();
+        $PmsProject->save();
 
-        return redirect()->route('home')->with('success', 'Project Updated Successfully');
+        return redirect()->route('projects.index')->with('success', 'Project Updated Successfully');
     }
-    public function deleteProject($id)
+    public function destroy($id)
     {
         // Find the project by its ID
-        $pmsProject = PmsProject::findOrFail($id);
+        $PmsProject = PmsProject::findOrFail($id);
 
         // Delete the project
-        $pmsProject->delete();
+        $PmsProject->delete();
 
         // Redirect with success message
         return redirect()->back()->with('success', 'Project Deleted Successfully');
