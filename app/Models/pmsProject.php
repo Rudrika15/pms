@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class pmsProject extends Model
+class PmsProject extends Model
 {
     public function teams()
     {

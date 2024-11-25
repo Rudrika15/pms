@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PmsTask;
-use App\Models\pmsTeam;
+use App\Models\PmsTeam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -38,7 +38,7 @@ class PmsTaskController extends Controller
     {
 
 
-        $teamMember = pmsTeam::where('project_id', $projectId)->with('user')->get();
+        $teamMember = PmsTeam::where('project_id', $projectId)->with('user')->get();
         return view('admin.tasks.create', compact('teamMember'));
     }
 

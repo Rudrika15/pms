@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class pmsTeam extends Model
+class PmsTeam extends Model
 {
     public function project()
     {
-        return $this->belongsTo(pmsProject::class, 'project_id', 'id');
+        return $this->belongsTo(PmsProject::class, 'project_id', 'id');
     }
     public function user()
     {

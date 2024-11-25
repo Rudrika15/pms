@@ -42,9 +42,9 @@ Route::delete('tasks/{id}', [PmsTaskController::class, 'destroy'])->name('tasks.
 Route::post('/tasks/status/{id?}', [PmsTaskController::class, 'updateStatus'])->name('tasks.updateStatus');
 
 //comment crud
-Route::get('comments', [PmsCommentController::class, 'index'])->name('comments.index');  // List all comments
-Route::get('comments/create', [PmsCommentController::class, 'create'])->name('comments.create'); // Show create form
-Route::post('comments', [PmsCommentController::class, 'store'])->name('comments.store'); // Store new comment
-Route::get('comments/{id}/edit', [PmsCommentController::class, 'edit'])->name('comments.edit'); // Show edit form
-Route::put('comments/{id}', [PmsCommentController::class, 'update'])->name('comments.update'); // Update comment
-Route::delete('comments/{id}', [PmsCommentController::class, 'destroy'])->name('comments.destroy'); // Delete comment
+Route::get('comments', [PmsCommentController::class, 'index'])->name('comments.index');
+Route::get('comments/create', [PmsCommentController::class, 'create'])->name('comments.create');
+Route::post('comments', [PmsCommentController::class, 'store'])->name('comments.store');
+Route::get('comments/{id}/edit', [PmsCommentController::class, 'edit'])->name('comments.edit');
+Route::put('comments/{id}', [PmsCommentController::class, 'update'])->name('comments.update');
+Route::delete('comments/{id}', [PmsCommentController::class, 'destroy'])->name('comments.destroy');

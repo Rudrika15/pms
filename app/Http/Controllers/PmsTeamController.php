@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\pmsProject;
-use App\Models\pmsTeam;
+use App\Models\PmsProject;
+use App\Models\PmsTeam;
 use App\Models\User;
 use Illuminate\Http\Request;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project;
@@ -22,7 +22,7 @@ class PmsTeamController extends Controller
     // Show the form to create a new team
     public function create()
     {
-        $projects = pmsProject::all();
+        $projects = PmsProject::all();
         $users = User::all();
         return view('admin.teams.create', compact('users', 'projects'));
     }
@@ -36,7 +36,7 @@ class PmsTeamController extends Controller
         ]);
         $users = $request->user_id;
         foreach ($users as $user) {
-            $pmsteams = new pmsTeam();
+            $pmsteams = new PmsTeam();
             $pmsteams->project_id = $request->project_id; // Set project_id
             $pmsteams->user_id = $user;       // Set user_id
             $pmsteams->save();
@@ -48,7 +48,7 @@ class PmsTeamController extends Controller
     // Show the form to edit an existing team
     public function edit($id)
     {
-        $team = pmsTeam::findOrFail($id);
+        $team = PmsTeam::findOrFail($id);
         return view('admin.teams.edit', compact('team'));
     }
 
@@ -60,7 +60,7 @@ class PmsTeamController extends Controller
         //     'user_id' => 'required|exists:users,id',
         // ]);
 
-        $pmsteams = pmsTeam::findOrFail($id);
+        $pmsteams = PmsTeam::findOrFail($id);
         $pmsteams->project_id = $request->project_id; // Assign updated project_id
         $pmsteams->user_id = $request->user_id;       // Assign updated user_id
         $pmsteams->save();
@@ -72,7 +72,7 @@ class PmsTeamController extends Controller
     // Delete a team
     public function destroy($id)
     {
-        $team = pmsTeam::findOrFail($id);
+        $team = PmsTeam::findOrFail($id);
         $team->delete();
 
         return redirect()->route('teams.index')->with('success', 'Team deleted successfully.');
