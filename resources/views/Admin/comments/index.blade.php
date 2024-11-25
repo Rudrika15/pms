@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h1>Comments List</h1>
-        <a href="{{ route('comments.create') }}" class="btn btn-primary mb-3">Add Comment</a>
+        <a href="{{ route('comments.create') }}" style="float: right" class="btn btn-primary mb-3">Add Comment</a>
 
         @if (session('success'))
             <div class="alert alert-success">

@@ -3,7 +3,7 @@
         <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
                 <div class="nav-profile-image">
-                    <img src="assets/images/faces/face1.jpg" alt="profile">
+                    <img src="{{ asset('assets/images/faces/face1.jpg') }}" alt="profile">
                     <span class="login-status online"></span>
                     <!--change to offline or busy as needed-->
                 </div>
@@ -15,50 +15,59 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="{{ route('home') }}">
                 <span class="menu-title">Dashboard</span>
                 <i class="mdi mdi-home menu-icon"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-                <span class="menu-title">Basic UI Elements</span>
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false"
+                aria-controls="ui-basic">
+                <span class="menu-title">Projects</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-crosshairs-gps menu-icon"></i>
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('project.create') }}">Add New Project</a>
+                    </li>
+                    @foreach ($projects as $item)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('tasks.index') }}/{{ $item->id }}">
+                                {{ $item->title }}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="pages/icons/mdi.html">
-                <span class="menu-title">Icons</span>
+        {{-- <li class="nav-item">
+            <a class="nav-link" href="{{ route('projects.index') }}">
+                <span class="menu-title">Projects</span>
                 <i class="mdi mdi-contacts menu-icon"></i>
             </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
-            <a class="nav-link" href="pages/forms/basic_elements.html">
-                <span class="menu-title">Forms</span>
+            <a class="nav-link" href="{{ route('teams.index') }}">
+                <span class="menu-title">Teams</span>
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="pages/charts/chartjs.html">
-                <span class="menu-title">Charts</span>
+            <a class="nav-link" href="{{ route('tasks.index') }}">
+                <span class="menu-title">Tasks</span>
                 <i class="mdi mdi-chart-bar menu-icon"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="pages/tables/basic-table.html">
-                <span class="menu-title">Tables</span>
+            <a class="nav-link" href="{{ route('comments.index') }}">
+                <span class="menu-title">Comments</span>
                 <i class="mdi mdi-table-large menu-icon"></i>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
+        {{-- <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false"
+                aria-controls="general-pages">
                 <span class="menu-title">Sample Pages</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-medical-bag menu-icon"></i>
@@ -77,7 +86,7 @@
                         </a></li>
                 </ul>
             </div>
-        </li>
+        </li> --}}
 
     </ul>
 </nav>
