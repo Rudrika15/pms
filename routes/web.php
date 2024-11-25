@@ -11,16 +11,16 @@ Route::get('/', function () {
     return view('admin.home');
 })->name('home');
 
-// this is comment for pushing the code 
+
 Auth::routes();
 
 // Project Crud
-Route::get('viewProject', [PmsProjectController::class, 'viewProject'])->name('viewProject');
-Route::get('addProject', [PmsProjectController::class, 'addProject'])->name('addProject');
-Route::post('postAddProject', [PmsProjectController::class, 'postAddProject'])->name('postAddProject');
-Route::get('editProject/{id}', [PmsProjectController::class, 'editProject'])->name('editProject');
-Route::post('postEditProject/{id}', [PmsProjectController::class, 'postEditProject'])->name('postEditProject');
-Route::get('deleteProject/{id}', [PmsProjectController::class, 'deleteProject'])->name('deleteProject');
+Route::get('projects', [PmsProjectController::class, 'index'])->name('projects.index');
+Route::get('project/create', [PmsProjectController::class, 'create'])->name('project.create');
+Route::post('projects', [PmsProjectController::class, 'store'])->name('project.store');
+Route::get('projects/{id}/edit', [PmsProjectController::class, 'edit'])->name('project.edit');
+Route::post('projects/{id}', [PmsProjectController::class, 'update'])->name('project.update');
+Route::get('projects/{id}', [PmsProjectController::class, 'destroy'])->name('project.destroy');
 
 //teams crud
 Route::get('teams', [PmsTeamController::class, 'index'])->name('teams.index');
@@ -28,16 +28,18 @@ Route::get('teams/create', [PmsTeamController::class, 'create'])->name('teams.cr
 Route::post('teams', [PmsTeamController::class, 'store'])->name('teams.store');
 Route::get('teams/{id}/edit', [PmsTeamController::class, 'edit'])->name('teams.edit');
 Route::put('teams/{id}', [PmsTeamController::class, 'update'])->name('teams.update');
-Route::delete('teams/{id}', [PmsTeamController::class, 'destroy'])->name('teams.destroy');
+Route::get('teams/{id}', [PmsTeamController::class, 'destroy'])->name('teams.destroy');
 
 //task crud
 
-Route::get('tasks', [PmsTaskController::class, 'index'])->name('tasks.index');
-Route::get('tasks/create', [PmsTaskController::class, 'create'])->name('tasks.create');
+Route::get('tasks/{id?}', [PmsTaskController::class, 'index'])->name('tasks.index');
+Route::get('create/tasks/{id?}', [PmsTaskController::class, 'create'])->name('tasks.create');
 Route::post('tasks', [PmsTaskController::class, 'store'])->name('tasks.store');
 Route::get('tasks/{id}/edit', [PmsTaskController::class, 'edit'])->name('tasks.edit');
 Route::put('tasks/{id}', [PmsTaskController::class, 'update'])->name('tasks.update');
 Route::delete('tasks/{id}', [PmsTaskController::class, 'destroy'])->name('tasks.destroy');
+
+Route::post('/tasks/status/{id?}', [PmsTaskController::class, 'updateStatus'])->name('tasks.updateStatus');
 
 //comment crud
 Route::get('comments', [PmsCommentController::class, 'index'])->name('comments.index');  // List all comments

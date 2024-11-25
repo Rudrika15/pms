@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 
 class PmsProjectController extends Controller
 {
-    public function addProject()
+    public function create()
     {
         return view('admin.project.create');
     }
 
-    public function postAddProject(Request $request)
+    public function store(Request $request)
     {
         $pmsProject = new pmsProject();
         $pmsProject->title = $request->title;
@@ -21,22 +21,22 @@ class PmsProjectController extends Controller
         $pmsProject->status = $request->status;
         $pmsProject->save();
 
-        return redirect()->back()->with('success', 'Projcet Added Successfully');
+        return redirect()->route('projects.index')->with('success', 'Projcet Added Successfully');
     }
 
-    public function viewProject()
+    public function index()
     {
         $project = pmsProject::all();
         return \view('admin.project.index', \compact('project'));
     }
 
-    public function editProject($id)
+    public function edit($id)
     {
         $project = pmsProject::find($id);
         return view('admin.project.update', compact('project'));
     }
 
-    public function postEditProject(Request $request, $id)
+    public function update(Request $request, $id)
     {
 
         $pmsProject = PmsProject::findOrFail($id);
@@ -48,9 +48,9 @@ class PmsProjectController extends Controller
 
         $pmsProject->save();
 
-        return redirect()->route('home')->with('success', 'Project Updated Successfully');
+        return redirect()->route('projects.index')->with('success', 'Project Updated Successfully');
     }
-    public function deleteProject($id)
+    public function destroy($id)
     {
         // Find the project by its ID
         $pmsProject = PmsProject::findOrFail($id);
