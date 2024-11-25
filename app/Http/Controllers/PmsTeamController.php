@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\pmsProject;
 use App\Models\pmsTeam;
+use App\Models\User;
 use Illuminate\Http\Request;
+use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
 class PmsTeamController extends Controller
 {
@@ -12,27 +15,33 @@ class PmsTeamController extends Controller
      */
     public function index()
     {
-        $teams = pmsTeam::all();
+        $teams = PmsProject::with(['teams.user'])->get();
         return view('admin.teams.index', compact('teams'));
     }
 
     // Show the form to create a new team
     public function create()
     {
-        return view('admin.teams.create');
+        $projects = pmsProject::all();
+        $users = User::all();
+        return view('admin.teams.create', compact('users', 'projects'));
     }
 
     // Store a new team
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'project_id' => 'required|exists:pmsprojects,id',
-        //     'user_id' => 'required|exists:users,id',
-        // ]);
-        $pmsteams = new pmsTeam();
-        $pmsteams->project_id = $request->project_id; // Set project_id
-        $pmsteams->user_id = $request->user_id;       // Set user_id
-        $pmsteams->save();
+        $request->validate([
+            'project_id' => 'required',
+            'user_id' => 'required',
+        ]);
+        $users = $request->user_id;
+        foreach ($users as $user) {
+            $pmsteams = new pmsTeam();
+            $pmsteams->project_id = $request->project_id; // Set project_id
+            $pmsteams->user_id = $user;       // Set user_id
+            $pmsteams->save();
+        }
+
         return redirect()->route('teams.index')->with('success', 'Team created successfully.');
     }
 
