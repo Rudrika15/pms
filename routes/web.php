@@ -33,11 +33,13 @@ Route::get('teams/{id}', [PmsTeamController::class, 'destroy'])->name('teams.des
 //task crud
 
 Route::get('tasks/{id?}', [PmsTaskController::class, 'index'])->name('tasks.index');
-Route::get('tasks/create', [PmsTaskController::class, 'create'])->name('tasks.create');
+Route::get('create/tasks/{id?}', [PmsTaskController::class, 'create'])->name('tasks.create');
 Route::post('tasks', [PmsTaskController::class, 'store'])->name('tasks.store');
 Route::get('tasks/{id}/edit', [PmsTaskController::class, 'edit'])->name('tasks.edit');
 Route::put('tasks/{id}', [PmsTaskController::class, 'update'])->name('tasks.update');
 Route::delete('tasks/{id}', [PmsTaskController::class, 'destroy'])->name('tasks.destroy');
+
+Route::post('/tasks/status/{id?}', [PmsTaskController::class, 'updateStatus'])->name('tasks.updateStatus');
 
 //comment crud
 Route::get('comments', [PmsCommentController::class, 'index'])->name('comments.index');  // List all comments

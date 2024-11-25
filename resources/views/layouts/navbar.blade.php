@@ -53,7 +53,7 @@
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="{{ route('tasks.index') }}">
                 <span class="menu-title">Tasks</span>
                 <i class="mdi mdi-chart-bar menu-icon"></i>
@@ -64,7 +64,7 @@
                 <span class="menu-title">Comments</span>
                 <i class="mdi mdi-table-large menu-icon"></i>
             </a>
-        </li>
+        </li> --}}
         {{-- <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false"
                 aria-controls="general-pages">
