@@ -57,10 +57,16 @@
             <div class="mb-3">
                 <label for="attachment" class="form-label">Attachment</label>
                 <input type="file" class="form-control" id="attachment" name="attachment">
+                @error('attachment')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="deadline" class="form-label">Deadline</label>
                 <input type="date" class="form-control" id="deadline" name="deadline">
+                @error('deadline')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <button type="submit" class="btn btn-primary">Add Task</button>
         </form>
@@ -68,7 +74,6 @@
     <script>
         var $jq = jQuery.noConflict();
         $jq(document).ready(function() {
-
             // Initialize Select2 on the select element with class "user_id"
             $jq('.user_id').select2({
                 placeholder: "Select Team Member", // Optional placeholder text
