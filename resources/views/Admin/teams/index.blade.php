@@ -2,10 +2,13 @@
 
 @section('content')
     <div class="container">
-        <h1>Team List</h1>
-        @if (Auth::user()->role != 'user')
-            <a href="{{ route('teams.create') }}" class="btn btn-primary mb-3 " style="float: right">Add Team</a>
-        @endif
+        <div class="d-flex justify-content-between">
+            <h1>Team List</h1>
+            @if (Auth::user()->role != 'user')
+                <a href="{{ route('teams.create') }}" class="btn btn-primary mb-3 " style="float: right">Add Team</a>
+            @endif
+        </div>
+
 
         @if (session('success'))
             <div class="alert alert-success">

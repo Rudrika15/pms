@@ -59,6 +59,12 @@
                     <i class="mdi mdi-format-list-bulleted menu-icon"></i>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('projects.index') }}">
+                    <span class="menu-title">Project List</span>
+                    <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                </a>
+            </li>
         @endif
         {{-- <li class="nav-item">
             <a class="nav-link" href="{{ route('tasks.index') }}">

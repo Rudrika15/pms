@@ -21,21 +21,25 @@
             </div>
             <div class="mb-3">
                 <label for="">Details</label>
-                <textarea cols="30" rows="5" required class="form-control" name="detail"></textarea>
+                <textarea cols="30" rows="5" required class="form-control summernote" name="detail"></textarea>
             </div>
 
             <div class="mb-3">
                 <label for="">Links</label>
-                <textarea cols="30" rows="5" required class="form-control" name="git_link"></textarea>
+                <textarea cols="30" rows="5" class="form-control summernote" name="git_link"></textarea>
             </div>
 
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="">Status</label>
-                <input required type="text" class="form-control" name="status">
-            </div>
+               <select name="status" class="form-control" id="">
+                   <option value="active">Active</option>
+                   <option value="inactive">Completed</option>
+               </select>
+            </div> --}}
 
             <button type="submit" class="btn btn-primary mt-3">ADD</button>
 
         </form>
     </div>
+
 @endsection

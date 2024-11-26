@@ -21,28 +21,28 @@ class PmsTaskController extends Controller
     {
         $id =  $projectId;
         $statuses = ['to-do', 'in-progress', 'done', 'deployed', 'completed'];
-        if (Auth::user()->roles->first()->name == 'User') {
-            $tasksByStatus = collect($statuses)
-                ->mapWithKeys(fn($status) => [$status => collect()])
-                ->merge(
-                    pmsTask::where('project_id', $projectId)
-                        ->whereIn('status', $statuses)
-                        ->where('user_id', Auth::user()->id)
-                        ->with('comment')
-                        ->get()
-                        ->groupBy('status')
-                );
-        } else {
-            $tasksByStatus = collect($statuses)
-                ->mapWithKeys(fn($status) => [$status => collect()])
-                ->merge(
-                    pmsTask::where('project_id', $projectId)
-                        ->whereIn('status', $statuses)
-                        ->with('comment')
-                        ->get()
-                        ->groupBy('status')
-                );
-        }
+        // if (Auth::user()->roles->first()->name == 'User') {
+        //     $tasksByStatus = collect($statuses)
+        //         ->mapWithKeys(fn($status) => [$status => collect()])
+        //         ->merge(
+        //             pmsTask::where('project_id', $projectId)
+        //                 ->whereIn('status', $statuses)
+        //                 ->where('user_id', Auth::user()->id)
+        //                 ->with('comment')
+        //                 ->get()
+        //                 ->groupBy('status')
+        //         );
+        // } else {
+        $tasksByStatus = collect($statuses)
+            ->mapWithKeys(fn($status) => [$status => collect()])
+            ->merge(
+                pmsTask::where('project_id', $projectId)
+                    ->whereIn('status', $statuses)
+                    ->with('comment')
+                    ->get()
+                    ->groupBy('status')
+            );
+        // }
 
         return view('admin.tasks.index', compact('tasksByStatus', 'id', 'statuses'));
     }
@@ -62,7 +62,6 @@ class PmsTaskController extends Controller
             'user_id' => 'required',
             'title' => 'required|string|max:255',
             'priority' => 'required|in:low,medium,high',
-            'deadline' => 'date',
         ]);
 
         $pmsTask = new PmsTask();
@@ -70,7 +69,7 @@ class PmsTaskController extends Controller
         $pmsTask->user_id = $request->user_id;
         $pmsTask->title = $request->title;
         $pmsTask->detail = $request->detail ?? '';
-        $pmsTask->status = $request->status ?? 'to-do';
+        $pmsTask->status = 'to-do';
         $pmsTask->priority = $request->priority ?? 'low';
         $pmsTask->deadline = $request->deadline ?? Carbon::now();
         if ($request->hasFile('attachment')) {
