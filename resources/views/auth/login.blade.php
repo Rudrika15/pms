@@ -21,7 +21,7 @@
             <div class="content-wrapperLogin d-flex align-items-center auth">
                 <div class="row flex-grow">
                     <div class="col-lg-4 mx-auto">
-                        <div class="auth-form-light text-center p-5">
+                        <div class="auth-form-light text-start p-5">
                             <div class="brand-logo">
                                 <img src="{{ asset('assets/images/logo.png') }}">
                             </div>
@@ -30,9 +30,15 @@
                                 @csrf
                                 <div class="form-group">
                                     <input type="email" name="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username">
+                                    @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
+                                    @error('password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" type="submit">Login </button>
