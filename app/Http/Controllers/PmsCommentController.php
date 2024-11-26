@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PmsComment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PmsCommentController extends Controller
 {
@@ -27,17 +28,16 @@ class PmsCommentController extends Controller
     {
         $request->validate([
             'task_id' => 'required',
-            'user_id' => 'required',
             'comment' => 'required|string|max:500',
         ]);
 
         $pmsComment = new PmsComment();
         $pmsComment->task_id = $request->task_id;  // Assign task_id
-        $pmsComment->user_id = $request->user_id;  // Assign user_id
+        $pmsComment->user_id = Auth::user()->id;  // Assign user_id
         $pmsComment->comment = $request->comment;  // Assign comment
         $pmsComment->save(); // Save the new comment
 
-        return redirect()->route('comments.index')->with('success', 'Comment added successfully.');
+        return redirect()->back()->with('success', 'Comment added successfully.');
     }
 
     // Show form to edit a comment

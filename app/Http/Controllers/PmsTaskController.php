@@ -15,22 +15,19 @@ class PmsTaskController extends Controller
     public function index($projectId,)
     {
         $id =  $projectId;
-        $toDo = pmsTask::where('project_id', $projectId)
-            ->where('status', 'to-do')
-            ->get();
-        $inProgress = pmsTask::where('project_id', $projectId)
-            ->where('status', 'in-progress')
-            ->get();
-        $done = pmsTask::where('project_id', $projectId)
-            ->where('status', 'done')
-            ->get();
-        $deployed = pmsTask::where('project_id', $projectId)
-            ->where('status', 'deployed')
-            ->get();
-        $completed = pmsTask::where('project_id', $projectId)
-            ->where('status', 'completed')
-            ->get();
-        return view('admin.tasks.index', compact('toDo', 'inProgress', 'done', 'deployed', 'completed', 'id'));
+        $statuses = ['to-do', 'in-progress', 'done', 'deployed', 'completed'];
+
+        $tasksByStatus = collect($statuses)
+            ->mapWithKeys(fn($status) => [$status => collect()])
+            ->merge(
+                pmsTask::where('project_id', $projectId)
+                    ->whereIn('status', $statuses)
+                    ->with('comment')
+                    ->get()
+                    ->groupBy('status')
+            );
+
+        return view('admin.tasks.index', compact('tasksByStatus', 'id', 'statuses'));
     }
 
     // Show form to create a new task
