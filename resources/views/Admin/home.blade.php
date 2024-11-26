@@ -101,11 +101,13 @@
                                                     @if ($tasks->status == 'to-do')
                                                         <label class="badge badge-gradient-primary">TO DO</label>
                                                     @elseif ($tasks->status == 'Done')
-                                                        <label class="badge badge-gradient-success">DONE</label>
+                                                        <label class="badge badge-gradient-warning">DONE</label>
                                                     @elseif ($tasks->status == 'deployed')
                                                         <label class="badge badge-gradient-info">DEPLOYED</label>
                                                     @elseif ($tasks->status == 'in-progress')
-                                                        <label class="badge badge-gradient-warning">IN PROGRESS</label>
+                                                        <label class="badge badge-gradient-danger">IN PROGRESS</label>
+                                                    @elseif ($tasks->status == 'completed')
+                                                        <label class="badge badge-gradient-success">COMPLETED</label>
                                                     @endif
                                                 </td>
                                                 <td>
