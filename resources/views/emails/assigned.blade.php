@@ -3,6 +3,7 @@
 
 <head>
     <title>Task Assigned</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -14,5 +15,6 @@
     <p><strong>Deadline:</strong> {{ $task->deadline }}</p>
     <p><a class="btn btn-primary" href="pms.flipcodesolutions.com/tasks/{{ $task->id }}">View Task</a></p>
 </body>
+
 
 </html>
