@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
         $totalTask = PmsTask::where('user_id', Auth::user()->id)->count();
         $recentTasks = PmsTask::where('user_id', Auth::user()->id)->with('projects')->orderBy('created_at', 'desc')->get();
         $pendingTask = PmsTask::where('user_id', Auth::user()->id)->where('status', 'Pending')->count();
+        // $allProjectStatus = PmsTask::where('user_id', Auth::user()->id)->groupBy('status')->get();
         return view('admin.home', compact('projectCount', 'userCount', 'totalTask', 'pendingTask', 'recentTasks'));
     })->name('home');
 

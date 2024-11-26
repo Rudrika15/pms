@@ -114,8 +114,14 @@
                                                         <label class="badge badge-gradient-warning">IN PROGRESS</label>
                                                     @endif
                                                 </td>
-                                                <td> Dec 5, 2017 </td>
-                                                <td> WD-12345 </td>
+                                                <td>
+                                                    @if ($tasks->deadline >= date('Y-m-d'))
+                                                        <label class="badge badge-gradient-success"> {{ $tasks->deadline }} </label>
+                                                    @else
+                                                        <label class="badge badge-gradient-danger"> {{ $tasks->deadline }} </label>
+                                                    @endif
+                                                </td>
+
                                             </tr>
                                         @endforeach
 
@@ -126,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-7 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -149,10 +155,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-7 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -297,7 +303,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
