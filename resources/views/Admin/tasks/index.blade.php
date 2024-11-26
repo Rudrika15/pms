@@ -21,7 +21,6 @@
 
         .kanban-column h2 {
             text-align: center;
-            color: #333;
             font-size: 1.5rem;
             margin-bottom: 20px;
         }
@@ -55,7 +54,9 @@
             align-items: center;
             position: -webkit-sticky;
             /* Safari */
-            background: #E5E5E5;
+            background: #5b5d5c;
+            border-radius: 10px;
+            color: white;
             box-shadow: -1px 7px 20px 0px #d3d3d3;
         }
     </style>
@@ -77,87 +78,116 @@
             </div>
         @endif
         <div class="kanban-board gap-3">
-            <!-- To Do Column -->
-            <div class="kanban-column " id="todo">
-                <h2>To Do</h2>
-                @foreach ($toDo as $item)
-                    <div class="kanban-card" draggable="true" data-task-id="{{ $item->id }}">{{ $item->title }}
-                        <select class="form-select status mt-2" class="status" name="status"
-                            data-task-id="{{ $item->id }}">
-                            <option value="to-do" selected disabled> To Do</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="done">Done</option>
-                            <option value="deployed">Deploy</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                @endforeach
+            @foreach ($tasksByStatus as $status => $tasks)
+                <div class="kanban-column" id="{{ $status }}">
+                    <h2>{{ ucfirst($status) }}</h2>
+                    @if ($tasks->isEmpty())
+                        <p>No tasks available.</p>
+                    @else
+                        @foreach ($tasks as $item)
+                            <div class="kanban-card" id="status" draggable="true">
+                                <!-- Task title links to its unique modal -->
+                                <a href="#" class="kanban-card-title text-decoration-none text-dark"
+                                    data-bs-toggle="modal" data-bs-target="#modal-{{ $item->id }}"
+                                    data-task-id="{{ $item->id }}">
+                                    {{ $item->title }}
+                                </a>
+                                <select class="form-select status mt-2" name="status" data-task-id="{{ $item->id }}">
+                                    @foreach ($statuses as $dropdownStatus)
+                                        <option value="{{ $dropdownStatus }}"
+                                            {{ $item->status === $dropdownStatus ? 'selected' : '' }}>
+                                            {{ ucfirst($dropdownStatus) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-            </div>
-            <!-- In Progress Column -->
-            <div class="kanban-column" id="inprogress">
-                <h2>In Progress</h2>
-                @foreach ($inProgress as $item)
-                    <div class="kanban-card" id="status" draggable="true">{{ $item->title }}
+                            <!-- Modal for each task -->
+                            <div class="modal fade" id="modal-{{ $item->id }}" tabindex="-1"
+                                aria-labelledby="modalLabel-{{ $item->id }}" data-bs-backdrop="static"
+                                data-bs-keyboard="false" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
 
-                        <select class="form-select status mt-2" class="status" name="status"
-                            data-task-id="{{ $item->id }}">
-                            <option value="in-progress" selected disabled>In Progress</option>
-                            <option value="to-do"> To Do</option>
-                            <option value="done">Done</option>
-                            <option value="deployed">Deploy</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                @endforeach
-            </div>
-            <div class="kanban-column" id="done">
-                <h2>Done</h2>
-                @foreach ($done as $item)
-                    <div class="kanban-card" id="status" draggable="true">{{ $item->title }}
-                        <select class="form-select status mt-2" class="status" name="status"
-                            data-task-id="{{ $item->id }}">
-                            <option value="done" selected disabled>Done</option>
-                            <option value="to-do"> To Do</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="deployed">Deploy</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                @endforeach
-            </div>
-            <div class="kanban-column" id="deploy">
-                <h2>Deploy</h2>
-                @foreach ($deployed as $item)
-                    <div class="kanban-card" id="status" draggable="true">{{ $item->title }}
-                        <select class="form-select status mt-2" class="status" name="status"
-                            data-task-id="{{ $item->id }}">
-                            <option value="deployed" selected disabled>Deploy</option>
-                            <option value="to-do"> To Do</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="done">Done</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                @endforeach
-            </div>
-            <div class="kanban-column" id="completed">
-                <h2>Completed</h2>
-                @foreach ($completed as $item)
-                    <div class="kanban-card" id="status" draggable="true">{{ $item->title }}
-                        <select class="form-select status mt-2" name="status" data-task-id="{{ $item->id }}">
-                            <option value="completed" selected disabled>Completed</option>
-                            <option value="to-do"> To Do</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="done">Done</option>
-                            <option value="deployed">Deploy</option>
-                        </select>
-                    </div>
-                @endforeach
-            </div>
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title" id="modalLabel-{{ $item->id }}">
+                                                {{ $item->title }}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-8">
+
+                                                    <p>{{ $item->detail }}</p>
+                                                    Assigned To : {{ $item->user->name ?? '' }}
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                    @if ($item->comment && count($item->comment) > 0)
+                                                        @foreach ($item->comment as $comment)
+                                                            <p>{{ $comment->comment }}</p>
+                                                            <p>{{ $comment->user->name ?? '' }}</p>
+                                                            <hr>
+                                                        @endforeach
+                                                    @else
+                                                        <p>No comments available for this task.</p>
+                                                        <hr>
+                                                    @endif
+
+
+                                                    <form action="{{ route('comments.store') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="task_id" value="{{ $item->id }}"
+                                                            id="">
+                                                        <div class="mb-3">
+                                                            <textarea class="form-control" name="comment" placeholder="Enter your comment"></textarea>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div> --}}
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            @endforeach
+
+
+
+
+
         </div>
     </div>
 
+    {{-- <div class="modal fade" id="modal-{{ $item->id }}" tabindex="-1" aria-labelledby="modalLabel-{{ $item->id }}"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel-{{ $item->id }}">{{ $item->title }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add task details here -->
+                    <p>{{ $item->detail }}</p>
+                    <!-- You can include more details about the task -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!-- Add more action buttons!-->
+                </div>
+            </div>
+        </div>
+    </div> --}}
     <!-- Completed Column -->
     <script>
         $(document).ready(function() {

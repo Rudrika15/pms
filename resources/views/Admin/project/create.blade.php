@@ -21,12 +21,12 @@
             </div>
             <div class="mb-3">
                 <label for="">Details</label>
-                <input required type="text" class="form-control" name="detail">
+                <textarea cols="30" rows="5" required class="form-control" name="detail"></textarea>
             </div>
 
             <div class="mb-3">
-                <label for="">Git link</label>
-                <input required type="text" class="form-control" name="git_link">
+                <label for="">Links</label>
+                <textarea cols="30" rows="5" required class="form-control" name="git_link"></textarea>
             </div>
 
             <div class="mb-3">

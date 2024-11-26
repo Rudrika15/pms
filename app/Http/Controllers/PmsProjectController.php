@@ -21,7 +21,7 @@ class PmsProjectController extends Controller
         $PmsProject->status = $request->status;
         $PmsProject->save();
 
-        return redirect()->route('projects.index')->with('success', 'Projcet Added Successfully');
+        return redirect()->route('tasks.index', $PmsProject->id)->with('success', 'Projcet Added Successfully');
     }
 
     public function index()
