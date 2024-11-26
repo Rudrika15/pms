@@ -84,6 +84,9 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
+                                            @role('Admin')
+                                                <th> Assigned to </th>
+                                            @endrole
                                             <th> Project </th>
                                             <th> Task </th>
                                             <th> Status </th>
@@ -93,6 +96,11 @@
                                     <tbody>
                                         @foreach ($recentTasks as $tasks)
                                             <tr>
+                                                @role('Admin')
+                                                    <td>
+                                                        {{ $tasks->user->name }}
+                                                    </td>
+                                                @endrole
                                                 <td>
                                                     {{ $tasks->projects->title }}
                                                 </td>
