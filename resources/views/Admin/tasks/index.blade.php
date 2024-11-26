@@ -59,6 +59,48 @@
             color: white;
             box-shadow: -1px 7px 20px 0px #d3d3d3;
         }
+
+        .left-col {
+            height: 100%;
+        }
+
+        .right-col {
+            height: 550px;
+        }
+
+        .sticky-form {
+            position: sticky;
+            bottom: 0;
+            /* Add background to cover any content behind it */
+            padding: 10px 0;
+            z-index: 10;
+            /* Ensure the form stays above other content */
+        }
+
+        .comments {
+            max-height: 450px;
+            overflow-y: scroll;
+        }
+
+        .comments::-webkit-scrollbar {
+            width: 5px;
+            color: orangered;
+            scroll-behavior: smooth;
+        }
+
+        .comments::-webkit-scrollbar-thumb {
+            background-color: #f46613;
+            border-radius: 10px;
+        }
+
+        .comments::-webkit-scrollbar-thumb:hover {
+            background-color: darkred;
+        }
+
+        .comments::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+            border-radius: 10px;
+        }
     </style>
     <div class="container">
         <div class="d-flex  justify-content-between">
@@ -75,6 +117,11 @@
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
             </div>
         @endif
         <div class="kanban-board gap-3">
@@ -118,34 +165,44 @@
 
                                         <div class="modal-body">
                                             <div class="row">
-                                                <div class="col-md-8">
+                                                <div class="col-md-8 left-col">
 
                                                     <p>{{ $item->detail }}</p>
                                                     Assigned To : {{ $item->user->name ?? '' }}
 
                                                 </div>
-                                                <div class="col-md-4">
-                                                    @if ($item->comment && count($item->comment) > 0)
-                                                        @foreach ($item->comment as $comment)
-                                                            <p>{{ $comment->comment }}</p>
-                                                            <p>{{ $comment->user->name ?? '' }}</p>
+                                                <div class="col-md-4 right-col">
+                                                    <div class="comments">
+                                                        @if ($item->comment && count($item->comment) > 0)
+                                                            @foreach ($item->comment as $comment)
+                                                                <p>{{ $comment->comment }}</p>
+                                                                <p>{{ $comment->user->name ?? '' }}</p>
+                                                                <hr>
+                                                            @endforeach
+                                                        @else
+                                                            <p>No comments available for this task.</p>
                                                             <hr>
-                                                        @endforeach
-                                                    @else
-                                                        <p>No comments available for this task.</p>
-                                                        <hr>
-                                                    @endif
+                                                        @endif
+                                                    </div>
+                                                    <!-- Sticky Comment Form -->
+                                                    <div class="text-box sticky-form">
+                                                        <form action="{{ route('comments.store') }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="task_id"
+                                                                value="{{ $item->id }}">
+                                                            <div class="mb-3">
 
-
-                                                    <form action="{{ route('comments.store') }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="task_id" value="{{ $item->id }}"
-                                                            id="">
-                                                        <div class="mb-3">
-                                                            <textarea class="form-control" name="comment" placeholder="Enter your comment"></textarea>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                                    </form>
+                                                                <div class="input-group mb-3">
+                                                                    <input type="text" class="form-control"
+                                                                        placeholder="Enter Comment"
+                                                                        aria-label="Enter Comment"
+                                                                        aria-describedby="button-addon2">
+                                                                    <button class="btn btn-primary" type="button"
+                                                                        id="button-addon2">Submit</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

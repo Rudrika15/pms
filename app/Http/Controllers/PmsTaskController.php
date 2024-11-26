@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TaskCreated;
 use App\Models\PmsTask;
 use App\Models\PmsTeam;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Console\View\Components\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class PmsTaskController extends Controller
 {
@@ -16,16 +21,28 @@ class PmsTaskController extends Controller
     {
         $id =  $projectId;
         $statuses = ['to-do', 'in-progress', 'done', 'deployed', 'completed'];
-
-        $tasksByStatus = collect($statuses)
-            ->mapWithKeys(fn($status) => [$status => collect()])
-            ->merge(
-                pmsTask::where('project_id', $projectId)
-                    ->whereIn('status', $statuses)
-                    ->with('comment')
-                    ->get()
-                    ->groupBy('status')
-            );
+        if (Auth::user()->roles->first()->name == 'User') {
+            $tasksByStatus = collect($statuses)
+                ->mapWithKeys(fn($status) => [$status => collect()])
+                ->merge(
+                    pmsTask::where('project_id', $projectId)
+                        ->whereIn('status', $statuses)
+                        ->where('user_id', Auth::user()->id)
+                        ->with('comment')
+                        ->get()
+                        ->groupBy('status')
+                );
+        } else {
+            $tasksByStatus = collect($statuses)
+                ->mapWithKeys(fn($status) => [$status => collect()])
+                ->merge(
+                    pmsTask::where('project_id', $projectId)
+                        ->whereIn('status', $statuses)
+                        ->with('comment')
+                        ->get()
+                        ->groupBy('status')
+                );
+        }
 
         return view('admin.tasks.index', compact('tasksByStatus', 'id', 'statuses'));
     }
@@ -33,8 +50,6 @@ class PmsTaskController extends Controller
     // Show form to create a new task
     public function create($projectId)
     {
-
-
         $teamMember = PmsTeam::where('project_id', $projectId)->with('user')->get();
         return view('admin.tasks.create', compact('teamMember'));
     }
@@ -58,13 +73,19 @@ class PmsTaskController extends Controller
         $pmsTask->status = $request->status ?? 'to-do';
         $pmsTask->priority = $request->priority ?? 'low';
         $pmsTask->deadline = $request->deadline ?? Carbon::now();
-
         if ($request->hasFile('attachment')) {
             $pmsTask->attachment = $request->file('attachment')->store('attachments');
         }
 
         $pmsTask->save();
 
+        $user = User::find($request->user_id);
+
+        if ($user) {
+            Mail::to($user->email)->send(new TaskCreated($pmsTask));
+        } else {
+            return redirect()->route('tasks.index', $request->project_id)->with('error', 'User not found!');
+        }
         return redirect()->route('tasks.index', $request->project_id)->with('success', 'Task created successfully.');
     }
 

@@ -11,7 +11,7 @@
                 <select name="user_id" class="form-control user_id">
                     <option value="" disabled selected> Select Team member</option>
                     @foreach ($teamMember as $member)
-                        <option value="{{ $member->id }} {{ old('user_id') }}">{{ $member->user->name }}</option>
+                        <option value="{{ $member->user_id }} {{ old('user_id') }}">{{ $member->user->name }}</option>
                     @endforeach
                 </select>
 
