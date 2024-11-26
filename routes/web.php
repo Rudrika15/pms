@@ -4,6 +4,9 @@ use App\Http\Controllers\PmsCommentController;
 use App\Http\Controllers\PmsProjectController;
 use App\Http\Controllers\PmsTaskController;
 use App\Http\Controllers\PmsTeamController;
+use App\Models\PmsProject;
+use App\Models\PmsTask;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +18,11 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/', function () {
-        return view('admin.home');
+        $projectCount = PmsProject::count();
+        $userCount = User::count();
+        $totalTask = PmsTask::where('user_id', Auth::user()->id)->count();
+        $pendingTask = PmsTask::where('user_id', Auth::user()->id)->where('status', 'Pending')->count();
+        return view('admin.home', compact('projectCount', 'userCount', 'totalTask', 'pendingTask'));
     })->name('home');
 
     // Project Crud
