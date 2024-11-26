@@ -32,9 +32,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('projects/{id}/edit', [PmsProjectController::class, 'edit'])->name('project.edit');
     Route::post('projects/{id}', [PmsProjectController::class, 'update'])->name('project.update');
     Route::get('projects/{id}', [PmsProjectController::class, 'destroy'])->name('project.destroy');
+
+    //teams crud
     Route::middleware('role.notuser') // Apply the middleware to all the following routes
         ->group(function () {
-            //teams crud
             Route::get('teams', [PmsTeamController::class, 'index'])->name('teams.index');
             Route::get('teams/create', [PmsTeamController::class, 'create'])->name('teams.create');
             Route::post('teams', [PmsTeamController::class, 'store'])->name('teams.store');
