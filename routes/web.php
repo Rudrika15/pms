@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('projects/{id}', [PmsProjectController::class, 'destroy'])->name('project.destroy');
 
     //teams crud
-    Route::middleware('role.notuser') // Apply the middleware to all the following routes
+    Route::middleware('role.notuser')
         ->group(function () {
             Route::get('teams', [PmsTeamController::class, 'index'])->name('teams.index');
             Route::get('teams/create', [PmsTeamController::class, 'create'])->name('teams.create');
