@@ -14,4 +14,9 @@ class PmsTask extends Model
     {
         return $this->hasMany(PmsComment::class, 'task_id', 'id');
     }
+
+    public function projects()
+    {
+        return $this->hasOne(PmsProject::class, 'id', 'project_id');
+    }
 }

@@ -21,8 +21,9 @@ Route::middleware(['auth'])->group(function () {
         $projectCount = PmsProject::count();
         $userCount = User::count();
         $totalTask = PmsTask::where('user_id', Auth::user()->id)->count();
+        $recentTasks = PmsTask::where('user_id', Auth::user()->id)->with('projects')->orderBy('created_at', 'desc')->get();
         $pendingTask = PmsTask::where('user_id', Auth::user()->id)->where('status', 'Pending')->count();
-        return view('admin.home', compact('projectCount', 'userCount', 'totalTask', 'pendingTask'));
+        return view('admin.home', compact('projectCount', 'userCount', 'totalTask', 'pendingTask', 'recentTasks'));
     })->name('home');
 
     // Project Crud
