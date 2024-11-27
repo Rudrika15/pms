@@ -43,6 +43,10 @@ class PmsProjectController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required|string',
+            'detail' => 'required|string',
+        ]);
 
         $PmsProject = PmsProject::findOrFail($id);
 

@@ -4,7 +4,7 @@
     <div class="container">
         <div class="d-flex justify-content-between">
             <h1>Project List</h1>
-            <a href="{{ route('project.create') }}" style="float: right" class="btn btn-primary mb-3">Add Project</a>
+            <a href="{{ route('project.create') }}" style="float: right" class="btn btn-sm btn-primary mb-3">Add Project</a>
         </div>
 
         @if (session('success'))
@@ -31,9 +31,10 @@
                         <td>{{ $item->status }}</td>
                         <td>
                             <div class="d-flex mt-3 mb-3 gap-3">
-                                <a href="{{ route('project.edit', $item->id) }}" class="btn btn-primary">Edit</a>
+                                <a href="{{ route('project.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                 <a href="{{ route('project.destroy', $item->id) }}"
-                                    onclick="return confirm('Do you want to delete it ')" class="btn btn-danger">Delete</a>
+                                    onclick="return confirm('Do you want to delete it ')"
+                                    class="btn btn-sm btn-danger">Delete</a>
                             </div>
                         </td>
                     </tr>

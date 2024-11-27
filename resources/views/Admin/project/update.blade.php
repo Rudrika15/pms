@@ -1,25 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('project.update', $project->id) }}" method="POST">
-        @csrf
-        <div class="card p-5 mt-5">
-            <div class="card-body">
-                <h1 class="text-center"> Edit Project </h1>
-                <label for="">Title</label>
-                <input required type="text" value="{{ $project->title }}" class="form-control" name="title">
+    <div class="container">
+        <h1>Edit Project</h1>
 
-                <label for="">Details</label>
-                <textarea required value="{{ $project->detail }}" class="form-control" name="detail"> </textarea>
-
-                <label for="">Links</label>
-                <textarea required value="{{ $project->git_link }}" cols="30" rows="5" class="form-control" name="git_link"> </textarea>
-
-                <label for="">Status</label>
-                <input required type="text" value="{{ $project->status }}" class="form-control" name="status">
-
-                <button type="submit" class="btn btn-primary mt-3">EDIT</button>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-        </div>
-    </form>
+        @endif
+        <form action="{{ route('project.update', $project->id) }}" method="POST">
+            @csrf
+
+            <label for="" class="mt-3">Title</label>
+            <input required type="text" value="{{ $project->title }}" class="form-control mb-3 " name="title">
+
+            <label for="">Details</label>
+            <textarea required class="form-control mb-3" name="detail"> {{ $project->detail }} </textarea>
+
+            <label for="">Links</label>
+            <textarea cols="30" rows="5" class="form-control mb-3" name="git_link"> {{ $project->git_link }} </textarea>
+
+            <label for="">Status</label>
+            <select name="status" class="form-control mb-3" id="">
+                <option value="active" {{ $project->status == 'active' ? 'selected' : '' }}>Active</option>
+                <option value="hold" {{ $project->status == 'hold' ? 'selected' : '' }}>Hold</option>
+                <option value="completed" {{ $project->status == 'completed' ? 'selected' : '' }}>Completed</option>
+            </select>
+            <button type="submit" class="btn btn-primary mt-3">EDIT</button>
+
+        </form>
+    </div>
 @endsection

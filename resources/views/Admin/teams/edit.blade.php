@@ -34,7 +34,7 @@
                                 <input type="checkbox" id="user_{{ $user->id }}" class="" name="user_id[]"
                                     value="{{ $user->id }}"
                                     {{ $project->first()->teams->pluck('user_id')->contains($user->id)? 'checked': '' }}>
-                                {{ $user->name }}
+                                {{ explode(' ', $user->name)[0] }}
                             </label>
                         </div>
                     @endforeach

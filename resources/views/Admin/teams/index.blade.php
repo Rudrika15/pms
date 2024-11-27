@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between">
             <h1>Team List</h1>
             @if (Auth::user()->role != 'user')
-                <a href="{{ route('teams.create') }}" class="btn btn-primary mb-3 " style="float: right">Add Team</a>
+                <a href="{{ route('teams.create') }}" class="btn btn-sm btn-primary mb-3 " style="float: right">Add Team</a>
             @endif
         </div>
 
@@ -32,7 +32,7 @@
                         <td>
                             @foreach ($team->teams as $item)
                                 <span class="bg-primary p-2 rounded-pill text-white">
-                                    {{ $item->user->name }} &nbsp;
+                                    {{ explode(' ', $item->user->name)[0] }} &nbsp;
                                     @if (Auth::user()->roles[0]->name != 'User')
                                         <a href="{{ route('teams.destroy', $item->id) }}"
                                             onclick="return confirm('Do you want to delete it ')"
@@ -45,7 +45,7 @@
                             @endforeach
                         </td>
                         <td>
-                            <a href="{{ route('teams.edit', $team->id) }}" class="btn btn-primary">Edit</a>
+                            <a href="{{ route('teams.edit', $team->id) }}" class="btn btn-sm btn-primary">Edit</a>
                         </td>
                     </tr>
                 @endforeach
