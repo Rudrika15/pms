@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PmsCommentController;
 use App\Http\Controllers\PmsProjectController;
 use App\Http\Controllers\PmsTaskController;
@@ -30,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
         // $allProjectStatus = PmsTask::where('user_id', Auth::user()->id)->groupBy('status')->get();
         return view('admin.home', compact('projectCount', 'userCount', 'totalTask', 'pendingTask', 'recentTasks', 'allProjects'));
     })->name('home');
+
+    Route::get('/projects/{id}/team-tasks', [HomeController::class, 'getTeamAndTaskCounts']);
 
     // Project Crud
     Route::get('projects', [PmsProjectController::class, 'index'])->name('projects.index');

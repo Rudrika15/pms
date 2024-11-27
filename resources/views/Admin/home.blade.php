@@ -93,54 +93,25 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-
-                                                <th> Assigned to </th>
-                                                <th> Project </th>
-                                                <th> Task </th>
-                                                <th> Status </th>
-                                                <th> Due Date </th>
+                                                <th>Assigned to</th>
+                                                <th>Project</th>
+                                                <th>Task</th>
+                                                <th>Status</th>
+                                                <th>Due Date</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            @foreach ($recentTasks as $tasks)
-                                                <tr>
-
-                                                    <td>
-                                                        {{ $tasks->user->name }}
-                                                    </td>
-
-                                                    <td>
-                                                        {{ $tasks->projects->title }}
-                                                    </td>
-                                                    <td> {{ $tasks->title }} </td>
-                                                    <td>
-                                                        @if ($tasks->status == 'to-do')
-                                                            <label class="badge badge-gradient-primary">TO DO</label>
-                                                        @elseif ($tasks->status == 'Done')
-                                                            <label class="badge badge-gradient-warning">DONE</label>
-                                                        @elseif ($tasks->status == 'deployed')
-                                                            <label class="badge badge-gradient-info">DEPLOYED</label>
-                                                        @elseif ($tasks->status == 'in-progress')
-                                                            <label class="badge badge-gradient-danger">IN PROGRESS</label>
-                                                        @elseif ($tasks->status == 'completed')
-                                                            <label class="badge badge-gradient-success">COMPLETED</label>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($tasks->deadline >= date('Y-m-d'))
-                                                            <label class="badge badge-gradient-success"> {{ $tasks->deadline }} </label>
-                                                        @else
-                                                            <label class="badge badge-gradient-danger"> {{ $tasks->deadline }} </label>
-                                                        @endif
-                                                    </td>
-
-                                                </tr>
-                                            @endforeach
-
+                                        <tbody id="teamTasksBody">
+                                            <tr>
+                                                <td colspan="5" class="text-center">No data available. Please select a project.</td>
+                                            </tr>
                                         </tbody>
                                     </table>
 
 
+                                </div>
+                                <div id="taskCounts" style="margin-top: 20px;">
+                                    <h4>Task Status Counts:</h4>
+                                    <ul id="statusList"></ul>
                                 </div>
                             </div>
                         </div>
@@ -404,10 +375,63 @@
     </div>
 
     <script>
-        // $(document).ready(function() {  
+        document.getElementById('projects').addEventListener('change', function() {
+            const projectId = this.value;
 
-        //     $('#projects').val
+            const teamTasksBody = document.getElementById('teamTasksBody');
+            const statusList = document.getElementById('statusList');
 
-        // });
+            // Clear current data
+            teamTasksBody.innerHTML = '<tr><td colspan="5" class="text-center">Loading...</td></tr>';
+            statusList.innerHTML = '';
+
+            if (projectId) {
+                fetch(`/projects/${projectId}/team-tasks`)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateTeamList(data.team, data.projectTitle);
+                        updateTaskStatusCounts(data.taskCounts);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        teamTasksBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error loading data.</td></tr>';
+                    });
+            } else {
+                teamTasksBody.innerHTML = '<tr><td colspan="5" class="text-center">No data available. Please select a project.</td></tr>';
+            }
+        });
+
+        function updateTeamList(team, projectTitle) {
+            const teamTasksBody = document.getElementById('teamTasksBody');
+            if (team.length === 0) {
+                teamTasksBody.innerHTML = '<tr><td colspan="5" class="text-center">No team members found for this project.</td></tr>';
+            } else {
+                teamTasksBody.innerHTML = '';
+                team.forEach(member => {
+                    const row = `
+                    <tr>
+                        <td>${member.name}</td>
+                        <td>${projectTitle}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                `;
+                    teamTasksBody.innerHTML += row;
+                });
+            }
+        }
+
+        function updateTaskStatusCounts(taskCounts) {
+            const statusList = document.getElementById('statusList');
+            if (taskCounts.length === 0) {
+                statusList.innerHTML = '<li>No tasks available for this project.</li>';
+            } else {
+                taskCounts.forEach(task => {
+                    const listItem = `<li>${task.status.toUpperCase()}: ${task.count}</li>`;
+                    statusList.innerHTML += listItem;
+                });
+            }
+        }
     </script>
 @endsection
