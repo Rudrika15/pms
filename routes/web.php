@@ -21,14 +21,14 @@ Route::middleware(['auth'])->group(function () {
         $projectCount = PmsProject::count();
         $userCount = User::count();
         $totalTask = PmsTask::where('user_id', Auth::user()->id)->count();
-        $recentTasks = PmsTask::where('user_id', Auth::user()->id)->with('projects')->orderBy('created_at', 'desc')->get();
+        $recentTasks = PmsTask::where('user_id', Auth::user()->id)->with('projects')->whereHas('projects')->orderBy('created_at', 'desc')->get();
         if (Auth::user()->roles->first()->name == 'Admin') {
-            $recentTasks = PmsTask::with('projects')->orderBy('created_at', 'desc')->get();
+            $recentTasks = PmsTask::with('projects')->whereHas('projects')->orderBy('created_at', 'desc')->get();
         }
         $allProjects = PmsProject::all();
         $pendingTask = PmsTask::where('user_id', Auth::user()->id)->where('status', 'Pending')->count();
         // $allProjectStatus = PmsTask::where('user_id', Auth::user()->id)->groupBy('status')->get();
-        return view('admin.home', compact('projectCount', 'userCount', 'totalTask', 'pendingTask', 'recentTasks','allProjects'));
+        return view('admin.home', compact('projectCount', 'userCount', 'totalTask', 'pendingTask', 'recentTasks', 'allProjects'));
     })->name('home');
 
     // Project Crud
