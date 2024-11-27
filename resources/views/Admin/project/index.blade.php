@@ -26,12 +26,12 @@
                             <td class="text-wrap">{{ $item->git_link }}</td>
                             <td>{{ $item->status }}</td>
                             <td>
-                                <div class="d-flex mt-3 mb-3 gap-3">
-                                    <a href="{{ route('project.edit', $item->id) }}" class="btn btn-primary">Edit</a>
+                                <div class="d-flex mt-3 mb-3 gap-2">
+                                    <a href="{{ route('project.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
                                     <a href="{{ route('project.destroy', $item->id) }}"
                                         data-url= "{{ route('project.destroy', $item->id) }}"
-                                        class="btn btn-danger delete-button">Delete</a>
+                                        class="btn btn-sm btn-danger delete-button">Delete</a>
                                 </div>
                             </td>
                         </tr>
