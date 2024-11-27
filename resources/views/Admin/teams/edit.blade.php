@@ -1,19 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Edit Team</h1>
+    <div class="container">
+        <h1>Edit Team</h1>
 
-    <form action="{{ route('teams.update', $team->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-        <div>
-            <label for="project_id">Project ID:</label>
-            <input type="number" id="project_id" name="project_id" value="{{ $team->project_id }}" required>
-        </div>
-        <div>
-            <label for="user_id">User ID:</label>
-            <input type="number" id="user_id" name="user_id" value="{{ $team->user_id }}" required>
-        </div>
-        <button type="submit">Update Team</button>
-    </form>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('teams.store') }}" method="POST">
+            @csrf
+            <div class="mb-3 mt-5 d-flex gap-5">
+                <h2>Project Name:</h2>
+                <div class="mt-2">
+
+                    @foreach ($project as $item)
+                        <h3>{{ $item->title }} </h3>
+                        <input type="hidden" value="{{ $item->id }}" name="project_id" id="">
+                    @endforeach
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="row">
+                    @foreach ($allUsers as $user)
+                        <div class="col-md-2 pt-2">
+                            <label for="user_{{ $user->id }}">
+                                <input type="checkbox" id="user_{{ $user->id }}" class="" name="user_id[]"
+                                    value="{{ $user->id }}"
+                                    {{ $project->first()->teams->pluck('user_id')->contains($user->id)? 'checked': '' }}>
+                                {{ $user->name }}
+                            </label>
+                        </div>
+                    @endforeach
+
+                </div>
+
+            </div>
+            <button class="btn btn-primary" type="submit">Update Team</button>
+        </form>
+    </div>
 @endsection

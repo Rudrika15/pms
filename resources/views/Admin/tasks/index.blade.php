@@ -148,7 +148,20 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <p>{{ explode(' ', $item->user->name)[0] }}</p>
+                                <div class="mt-2">
+                                    @if (illuminate\Support\Facades\Auth::user()->roles[0]->name == 'User')
+                                        <p>{{ explode(' ', $item->user->name)[0] }}</p>
+                                    @else
+                                        <select name="user_id" class="form-select" data-task-id="{{ $item->id }}"
+                                            id="user_id">
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->user->id }}"
+                                                    {{ $item->user_id == $user->user->id ? 'selected' : '' }}>
+                                                    {{ explode(' ', $user->user->name)[0] }}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                </div>
                             </div>
 
                             <!-- Modal for each task -->
@@ -218,35 +231,28 @@
                     @endif
                 </div>
             @endforeach
-
-
-
-
-
         </div>
     </div>
-
-    {{-- <div class="modal fade" id="modal-{{ $item->id }}" tabindex="-1" aria-labelledby="modalLabel-{{ $item->id }}"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel-{{ $item->id }}">{{ $item->title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Add task details here -->
-                    <p>{{ $item->detail }}</p>
-                    <!-- You can include more details about the task -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <!-- Add more action buttons!-->
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <!-- Completed Column -->
+
+    {{-- on change of the #user_id it should chnage the user name make ajax call update task  --}}
+    <script>
+        $(document).ready(function() {
+            $('#user_id').on('change', function() {
+                var taskId = $(this).data('task-id');
+                var userId = $(this).val();
+                $.ajax({
+                    url: "{{ route('tasks.updateUserId', ':taskId') }}".replace(':taskId', taskId),
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        user_id: userId,
+                        taskId: taskId, // Include the taskId in the data
+                    }
+                })
+            })
+        })
+    </script>
     <script>
         $(document).ready(function() {
             // Delegate the change event to all status dropdowns
@@ -277,28 +283,4 @@
             });
         });
     </script>
-    {{-- <script>
-        // Adding drag-and-drop functionality
-        const cards = document.querySelectorAll('.kanban-card');
-        const columns = document.querySelectorAll('.kanban-column');
-
-        cards.forEach(card => {
-            card.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('text', e.target.id);
-            });
-        });
-
-        columns.forEach(column => {
-            column.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-
-            column.addEventListener('drop', (e) => {
-                e.preventDefault();
-                const cardId = e.dataTransfer.getData('text');
-                const card = document.getElementById(cardId);
-                column.appendChild(card);
-            });
-        });
-    </script> --}}
 @endsection

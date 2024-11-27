@@ -21,7 +21,7 @@
                     <th>#</th>
                     <th>Project Name</th>
                     <th>User Name</th>
-                    {{-- <th>Actions</th> --}}
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,14 +44,9 @@
                                 &nbsp;
                             @endforeach
                         </td>
-
-                        {{-- @foreach ($team->project as $item)
-                            <td>
-                                @if ($projectid == $team->project_id)
-                                    {{ $team->user->name }}
-                                @endif
-                            </td>
-                        @endforeach --}}
+                        <td>
+                            <a href="{{ route('teams.edit', $team->id) }}" class="btn btn-primary">Edit</a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
