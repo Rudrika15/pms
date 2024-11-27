@@ -20,10 +20,12 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/logoMini.png') }}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js"></script>
 
 </head>
 
@@ -80,11 +82,14 @@
             }
         });
     </script> --}}
-    {{-- sweet alert end --}}
-    {{-- select 2 --}}
+
+    {{-- summer note --}}
+
+
+
+
 
     <!-- plugins:js -->
-
     <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
@@ -100,6 +105,12 @@
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
     <script src="{{ asset('assets/js/todolist.js') }}"></script>
     <!-- End custom js for this page -->
+    <script>
+        jQuery.noConflict();
+        jQuery(document).ready(function($) {
+            $('.summernote').summernote();
+        });
+    </script>
 </body>
 
 </html>

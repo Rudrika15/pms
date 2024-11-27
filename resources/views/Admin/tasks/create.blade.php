@@ -33,7 +33,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
                 <select name="status" class="form-control" id="status">
                     <option value="to-do">TO DO</option>
@@ -45,7 +45,7 @@
                 @error('status')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
-            </div>
+            </div> --}}
             <div class="mb-3">
                 <label for="priority" class="form-label">Priority</label>
                 <select class="form-control" id="priority" name="priority">

@@ -15,8 +15,9 @@
             width: 40%;
             padding: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            min-height: 300px;
-
+            min-height: 70vh;
+            max-height: 100vh;
+            overflow-y: scroll;
         }
 
         .kanban-column h2 {
@@ -147,6 +148,7 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <p>{{ explode(' ', $item->user->name)[0] }}</p>
                             </div>
 
                             <!-- Modal for each task -->
@@ -191,13 +193,12 @@
                                                             <input type="hidden" name="task_id"
                                                                 value="{{ $item->id }}">
                                                             <div class="mb-3">
-
                                                                 <div class="input-group mb-3">
                                                                     <input type="text" class="form-control"
                                                                         placeholder="Enter Comment"
-                                                                        aria-label="Enter Comment"
+                                                                        aria-label="Enter Comment" name="comment"
                                                                         aria-describedby="button-addon2">
-                                                                    <button class="btn btn-primary" type="button"
+                                                                    <button class="btn btn-primary" type="submit"
                                                                         id="button-addon2">Submit</button>
                                                                 </div>
                                                             </div>

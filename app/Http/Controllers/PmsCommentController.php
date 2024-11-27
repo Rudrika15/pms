@@ -26,11 +26,10 @@ class PmsCommentController extends Controller
     // Store a new comment
     public function store(Request $request)
     {
+        // return "hello";
         $request->validate([
-            'task_id' => 'required',
-            'comment' => 'required|string|max:500',
+            'comment' => 'required',
         ]);
-
         $pmsComment = new PmsComment();
         $pmsComment->task_id = $request->task_id;  // Assign task_id
         $pmsComment->user_id = Auth::user()->id;  // Assign user_id

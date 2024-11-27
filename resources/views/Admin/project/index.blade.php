@@ -2,8 +2,10 @@
 
 @section('content')
     <div class="container">
-        <h1>Project List</h1>
-        <a href="{{ route('project.create') }}" style="float: right" class="btn btn-primary mb-3">Add Project</a>
+        <div class="d-flex justify-content-between">
+            <h1>Project List</h1>
+            <a href="{{ route('project.create') }}" style="float: right" class="btn btn-primary mb-3">Add Project</a>
+        </div>
 
         @if (session('success'))
             <div class="alert alert-success">

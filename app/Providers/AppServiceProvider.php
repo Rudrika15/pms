@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        View::share('projects', PmsProject::all());
+        View::share('projects', PmsProject::where('status', 'active')->get());
         Route::aliasMiddleware('role.notuser', \App\Http\Middleware\CheckRole::class);
     }
 }
