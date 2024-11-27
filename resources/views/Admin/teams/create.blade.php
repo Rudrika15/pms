@@ -31,12 +31,11 @@
                         <div class="col-md-2 pt-2">
                             <label for="{{ $item->id }}">
                                 <input type="checkbox" id="{{ $item->id }}" class="" name="user_id[]"
-                                    value="{{ $item->id }}">{{ $item->name }}</input>
+                                    value="{{ $item->id }}">{{ explode(' ', $item->name)[0] }}</input>
                             </label>
                         </div>
                     @endforeach
                 </div>
-
             </div>
             <button class="btn btn-primary" type="submit">Create Team</button>
         </form>
