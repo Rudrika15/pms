@@ -27,13 +27,15 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->title }}</td>
-                            <td>{{ $item->detail }}</td>
-                            <td>{{ $item->git_link }}</td>
+                            <td class="text-wrap">{{ $item->detail }}</td>
+                            <td class="text-wrap">{{ $item->git_link }}</td>
                             <td>{{ $item->status }}</td>
                             <td>
                                 <div class="d-flex mt-3 mb-3 gap-3">
                                     <a href="{{ route('project.edit', $item->id) }}" class="btn btn-primary">Edit</a>
-                                    <a href="{{ route('project.destroy', $item->id) }}" onclick="return confirm('Do you want to delete it ')" class="btn btn-danger">Delete</a>
+                                    <a href="{{ route('project.destroy', $item->id) }}"
+                                        onclick="return confirm('Do you want to delete it ')"
+                                        class="btn btn-danger">Delete</a>
                                 </div>
                             </td>
                         </tr>
