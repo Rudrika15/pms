@@ -43,8 +43,11 @@ class PmsTaskController extends Controller
                     ->groupBy('status')
             );
         // }
+        // show users by project
 
-        return view('admin.tasks.index', compact('tasksByStatus', 'id', 'statuses'));
+        $users = PmsTeam::where('project_id', $projectId)->with('user')->get();
+
+        return view('admin.tasks.index', compact('tasksByStatus', 'id', 'statuses', 'users'));
     }
 
     // Show form to create a new task
@@ -134,6 +137,19 @@ class PmsTaskController extends Controller
         $task = pmsTask::findOrFail($taskId);
         $task->status = $request->status; // Update status
         $task->save();
+
+        return response()->json(['success' => true, 'message' => 'Task status updated successfully.']);
+    }
+
+    public function updateUserId(Request $request, $taskId)
+    {
+        $pmsTask = pmsTask::findOrFail($taskId);
+        $pmsTask->user_id = $request->user_id;
+        $pmsTask->status = 'to-do';
+        $pmsTask->save();
+
+        $user = User::find($request->user_id);
+        Mail::to($user->email)->send(new TaskCreated($pmsTask));
 
         return response()->json(['success' => true, 'message' => 'Task status updated successfully.']);
     }

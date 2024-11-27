@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('tasks/{id}', [PmsTaskController::class, 'update'])->name('tasks.update');
     Route::delete('tasks/{id}', [PmsTaskController::class, 'destroy'])->name('tasks.destroy');
     Route::post('/tasks/status/{id?}', [PmsTaskController::class, 'updateStatus'])->name('tasks.updateStatus');
+    Route::post('/tasks/user/{id?}', [PmsTaskController::class, 'updateUserId'])->name('tasks.updateUserId');
 
     //comment crud
     Route::get('comments', [PmsCommentController::class, 'index'])->name('comments.index');
