@@ -6,19 +6,25 @@
         <form action="{{ route('tasks.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="project_id" value="{{ request('id') }}">
-            <div class="mb-3">
-                <label for="user_id" class="form-label">User</label>
-                <select name="user_id" class="form-control user_id">
-                    <option value="" disabled selected> Select Team member</option>
-                    @foreach ($teamMember as $member)
-                        <option value="{{ $member->user_id }} {{ old('user_id') }}">{{ $member->user->name }}</option>
-                    @endforeach
-                </select>
+            @if (illuminate\Support\Facades\Auth::user()->roles->first()->name == 'User')
+                <input type="hidden" value="{{ illuminate\Support\Facades\Auth::user()->id }}" name="user_id">
+            @else
+                <div class="mb-3">
+                    <label for="user_id" class="form-label">User</label>
 
-                @error('user_id')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
+                    <select name="user_id" class="form-control user_id">
+                        <option value="" disabled selected> Select Team member</option>
+                        @foreach ($teamMember as $member)
+                            <option value="{{ $member->user_id }} {{ old('user_id') }}">{{ $member->user->name }}</option>
+                        @endforeach
+                    </select>
+
+                    @error('user_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            @endif
+
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="title">
@@ -63,7 +69,8 @@
             </div>
             <div class="mb-3">
                 <label for="deadline" class="form-label">Deadline</label>
-                <input type="date" class="form-control" id="deadline" name="deadline">
+                <input type="date" class="form-control" id="deadline"
+                    value="{{ \Carbon\Carbon::today()->toDateString() }}" name="deadline">
                 @error('deadline')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
