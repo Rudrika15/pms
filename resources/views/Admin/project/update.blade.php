@@ -36,7 +36,6 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary ">EDIT</button>
-
         </form>
     </div>
 @endsection
