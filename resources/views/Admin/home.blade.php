@@ -75,12 +75,89 @@
                 </div> --}}
             </div>
 
-            <div class="row">
+            @role('Admin')
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Recent Tickets</h4>
+                                <div class="table-responsive">
+
+                                    <select name="project" id="projects" class="form-control">
+                                        <option value="">Select Project</option>
+                                        @foreach ($allProjects as $project)
+                                            <option value="{{ $project->id }}">{{ $project->title }}</option>
+                                        @endforeach
+                                    </select>
+                                    <br>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+
+                                                <th> Assigned to </th>
+                                                <th> Project </th>
+                                                <th> Task </th>
+                                                <th> Status </th>
+                                                <th> Due Date </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($recentTasks as $tasks)
+                                                <tr>
+
+                                                    <td>
+                                                        {{ $tasks->user->name }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{ $tasks->projects->title }}
+                                                    </td>
+                                                    <td> {{ $tasks->title }} </td>
+                                                    <td>
+                                                        @if ($tasks->status == 'to-do')
+                                                            <label class="badge badge-gradient-primary">TO DO</label>
+                                                        @elseif ($tasks->status == 'Done')
+                                                            <label class="badge badge-gradient-warning">DONE</label>
+                                                        @elseif ($tasks->status == 'deployed')
+                                                            <label class="badge badge-gradient-info">DEPLOYED</label>
+                                                        @elseif ($tasks->status == 'in-progress')
+                                                            <label class="badge badge-gradient-danger">IN PROGRESS</label>
+                                                        @elseif ($tasks->status == 'completed')
+                                                            <label class="badge badge-gradient-success">COMPLETED</label>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($tasks->deadline >= date('Y-m-d'))
+                                                            <label class="badge badge-gradient-success"> {{ $tasks->deadline }} </label>
+                                                        @else
+                                                            <label class="badge badge-gradient-danger"> {{ $tasks->deadline }} </label>
+                                                        @endif
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endrole
+            {{-- <div class="row">
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Recent Tickets</h4>
                             <div class="table-responsive">
+
+                                <select name="project" id="projects" class="form-control">
+                                    <option value="">Select Project</option>
+                                </select>
+                                <br>
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -131,11 +208,13 @@
 
                                     </tbody>
                                 </table>
+
+
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             {{-- <div class="row">
                 <div class="col-md-7 grid-margin stretch-card">
                     <div class="card">
@@ -323,4 +402,12 @@
         </footer>
         <!-- partial -->
     </div>
+
+    <script>
+        // $(document).ready(function() {  
+
+        //     $('#projects').val
+
+        // });
+    </script>
 @endsection
