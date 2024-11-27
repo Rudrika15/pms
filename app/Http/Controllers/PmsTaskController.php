@@ -63,6 +63,7 @@ class PmsTaskController extends Controller
         $request->validate([
             'project_id' => 'required',
             'user_id' => 'required',
+            'detail' => 'required',
             'title' => 'required|string|max:255',
             'priority' => 'required|in:low,medium,high',
         ]);

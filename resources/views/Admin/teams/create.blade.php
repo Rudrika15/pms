@@ -4,26 +4,19 @@
     <div class="container">
         <h1>Add Team</h1>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
         <form action="{{ route('teams.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="project_id " class="mb-2">Select Project:</label>
-                <select name="project_id" class="form-select" id="" required>
+                <select name="project_id" class="form-select" id="">
                     <option value="" selected disabled>Select Project</option>
                     @foreach ($projects as $item)
                         <option value="{{ $item->id }}">{{ $item->title }}</option>
                     @endforeach
                 </select>
+                @error('project_id')
+                    <span class="text-danger">Please Select Project</span>
+                @enderror
             </div>
             <div class="mb-3">
                 <div class="row">
@@ -35,6 +28,9 @@
                             </label>
                         </div>
                     @endforeach
+                    @error('user_id')
+                        <span class="text-danger">Please Select User</span>
+                    @enderror
                 </div>
             </div>
             <button class="btn btn-primary" type="submit">Create Team</button>

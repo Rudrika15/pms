@@ -7,11 +7,6 @@
             <a href="{{ route('project.create') }}" style="float: right" class="btn btn-sm btn-primary mb-3">Add Project</a>
         </div>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -33,9 +28,10 @@
                             <td>
                                 <div class="d-flex mt-3 mb-3 gap-3">
                                     <a href="{{ route('project.edit', $item->id) }}" class="btn btn-primary">Edit</a>
+
                                     <a href="{{ route('project.destroy', $item->id) }}"
-                                        onclick="return confirm('Do you want to delete it ')"
-                                        class="btn btn-danger">Delete</a>
+                                        data-url= "{{ route('project.destroy', $item->id) }}"
+                                        class="btn btn-danger delete-button">Delete</a>
                                 </div>
                             </td>
                         </tr>

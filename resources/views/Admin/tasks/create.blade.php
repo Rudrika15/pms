@@ -15,26 +15,28 @@
                     <select name="user_id" class="form-control user_id">
                         <option value="" disabled selected> Select Team member</option>
                         @foreach ($teamMember as $member)
-                            <option value="{{ $member->user_id }} {{ old('user_id') }}">{{ $member->user->name }}</option>
+                            <option value="{{ $member->user_id }}"
+                                {{ old('user_id') == $member->user_id ? 'selected' : '' }}>{{ $member->user->name }}
+                            </option>
                         @endforeach
                     </select>
 
                     @error('user_id')
-                        <span class="text-danger">{{ $message }}</span>
+                        <span class="text-danger">Please Select User</span>
                     @enderror
                 </div>
             @endif
 
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title">
+                <input type="text" value="{{ old('title') }}" class="form-control" id="title" name="title">
                 @error('title')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="mb-3">
                 <label for="detail" class="form-label">Detail</label>
-                <textarea class="form-control" id="detail" name="detail" rows="4"></textarea>
+                <textarea class="form-control" id="detail" name="detail" rows="4">{{ old('detail') }}</textarea>
                 @error('detail')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror

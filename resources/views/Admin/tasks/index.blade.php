@@ -158,16 +158,6 @@
         </div>
         {{-- <a href="{{ route('tasks.create') }}" style="float: right" class="btn btn-primary mb-3">Add Task</a> --}}
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
         <div class="kanban-board gap-3">
             @foreach ($tasksByStatus as $status => $tasks)
                 <div class="kanban-column" id="{{ $status }}">

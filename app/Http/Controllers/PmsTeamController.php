@@ -23,6 +23,7 @@ class PmsTeamController extends Controller
     // Show the form to create a new team
     public function create()
     {
+
         $project_id = PmsTeam::all();
         $projects = PmsProject::where('status', 'active')
             ->whereNotIn('id', $project_id->pluck('project_id'))
@@ -35,6 +36,7 @@ class PmsTeamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'project_id' => 'required',
             'user_id' => 'required',
         ]);
 
@@ -47,10 +49,12 @@ class PmsTeamController extends Controller
             $pmsteams->user_id = $user;       // Set user_id
             $pmsteams->save();
         }
-
-        return redirect()->route('teams.index')->with('success', 'Team created successfully.');
+        if (url()->previous() === route('teams.edit', ['id' => $request->project_id])) {
+            return redirect()->route('teams.index')->with('success', 'Team edited successfully.');
+        } else {
+            return redirect()->route('teams.index')->with('success', 'Team created successfully.');
+        }
     }
-
     // Show the form to edit an existing team
     public function edit($id)
     {
@@ -84,6 +88,6 @@ class PmsTeamController extends Controller
         $team = PmsTeam::findOrFail($id);
         $team->delete();
 
-        return redirect()->route('teams.index')->with('success', 'Team deleted successfully.');
+        return redirect()->route('teams.index')->with('success', 'User deleted successfully.');
     }
 }

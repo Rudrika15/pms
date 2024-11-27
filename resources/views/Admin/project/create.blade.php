@@ -3,30 +3,26 @@
     <div class="container">
         <h1>Add Project</h1>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
         <form action="{{ route('project.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="">Title</label>
-                <input required type="text" class="form-control" name="title">
+                <input type="text" value="{{ old('title') }}" class="form-control" name="title">
+                @error('title')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="">Details</label>
-                <textarea cols="30" rows="5" required class="form-control summernote" name="detail"></textarea>
+                <textarea cols="30" rows="5" class="form-control summernote" name="detail">{{ old('detail') }}</textarea>
+                @error('detail')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label for="">Links</label>
-                <textarea cols="30" rows="5" class="form-control summernote" name="git_link"></textarea>
+                <textarea cols="30" rows="5" class="form-control summernote" name="git_link">{{ old('git_link') }}</textarea>
             </div>
 
             {{-- <div class="mb-3">
@@ -41,5 +37,4 @@
 
         </form>
     </div>
-
 @endsection

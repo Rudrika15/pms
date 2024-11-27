@@ -9,12 +9,6 @@
             @endif
         </div>
 
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -34,9 +28,8 @@
                                 <span class="bg-primary p-2 rounded-pill text-white">
                                     {{ explode(' ', $item->user->name)[0] }} &nbsp;
                                     @if (Auth::user()->roles[0]->name != 'User')
-                                        <a href="{{ route('teams.destroy', $item->id) }}"
-                                            onclick="return confirm('Do you want to delete it ')"
-                                            class="text-light text-decoration-none">
+                                        <a href="javascript:void(0);" data-url="{{ route('teams.destroy', $item->id) }}"
+                                            class="text-light text-decoration-none delete-button">
                                             <i class="fa fa-times"></i>
                                         </a>
                                     @endif
