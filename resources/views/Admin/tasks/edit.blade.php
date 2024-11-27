@@ -19,31 +19,27 @@
             @method('PUT')
             <div class="mb-3">
                 <label for="project_id" class="form-label">Project</label>
-                <input type="number" class="form-control" id="project_id" name="project_id" value="{{ $task->project_id }}"
-                    required>
+                <input type="number" class="form-control" id="project_id" name="project_id" value="{{ $task->project_id }}">
             </div>
             <div class="mb-3">
                 <label for="user_id" class="form-label">User</label>
-                <input type="number" class="form-control" id="user_id" name="user_id" value="{{ $task->user_id }}"
-                    required>
+                <input type="number" class="form-control" id="user_id" name="user_id" value="{{ $task->user_id }}">
             </div>
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ $task->title }}"
-                    required>
+                <input type="text" class="form-control" id="title" name="title" value="{{ $task->title }}">
             </div>
             <div class="mb-3">
                 <label for="detail" class="form-label">Detail</label>
-                <textarea class="form-control" id="detail" name="detail" rows="4" required>{{ $task->detail }}</textarea>
+                <textarea class="form-control" id="detail" name="detail" rows="4">{{ $task->detail }}</textarea>
             </div>
             <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
-                <input type="text" class="form-control" id="status" name="status" value="{{ $task->status }}"
-                    required>
+                <input type="text" class="form-control" id="status" name="status" value="{{ $task->status }}">
             </div>
             <div class="mb-3">
                 <label for="priority" class="form-label">Priority</label>
-                <select class="form-control" id="priority" name="priority" required>
+                <select class="form-control" id="priority" name="priority">
                     <option value="low" {{ $task->priority == 'low' ? 'selected' : '' }}>Low</option>
                     <option value="medium" {{ $task->priority == 'medium' ? 'selected' : '' }}>Medium</option>
                     <option value="high" {{ $task->priority == 'high' ? 'selected' : '' }}>High</option>
@@ -58,8 +54,7 @@
             </div>
             <div class="mb-3">
                 <label for="deadline" class="form-label">Deadline</label>
-                <input type="date" class="form-control" id="deadline" name="deadline" value="{{ $task->deadline }}"
-                    required>
+                <input type="date" class="form-control" id="deadline" name="deadline" value="{{ $task->deadline }}">
             </div>
             <button type="submit" class="btn btn-primary">Update Task</button>
         </form>
