@@ -94,8 +94,8 @@
                                         <thead>
                                             <tr>
                                                 <th>Assigned to</th>
-                                                <th>Project</th>
-                                                <th>Task</th>
+                                                <th>TO-DO</th>
+                                                <th></th>
                                                 <th>Status</th>
                                                 <th>Due Date</th>
                                             </tr>
