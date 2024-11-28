@@ -411,14 +411,14 @@
                         const taskDeadline = new Date(task.deadline);
                         const isOverdue = task.deadline && taskDeadline < currentDate;
 
-                        const deadlineStyle = isOverdue ? 'color: red; font-weight: bold;' : '';
+                        const deadlineStyle = isOverdue ? 'color: red;' : '';
 
                         const statusBadge = task.status === 'completed' ?
-                            '<span class="badge badge-success">Completed</span>' :
+                            '<span class="text-success">Completed</span>' :
                             task.status === 'deployed' ?
-                            '<span class="badge badge-info">Deployed</span>' :
+                            '<span class="text-info">Deployed</span>' :
                             task.status === 'to-do' ?
-                            '<span class="badge badge-danger">To Do</span>' :
+                            '<span class="text-danger">To Do</span>' :
                             '-';
 
                         const row = `
