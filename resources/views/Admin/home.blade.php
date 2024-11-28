@@ -94,30 +94,27 @@
                                         <thead>
                                             <tr>
                                                 <th>Assigned to</th>
-                                                <th>TO-DO</th>
-                                                <th></th>
-                                                <th>Status</th>
+                                                <th>Todo</th>
+                                                <th>Completed</th>
+                                                <th>Deployed</th>
                                                 <th>Due Date</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody id="teamTasksBody">
                                             <tr>
-                                                <td colspan="5" class="text-center">No data available. Please select a project.</td>
+                                                <td colspan="6" class="text-center">No data available. Please select a project.</td>
                                             </tr>
                                         </tbody>
                                     </table>
 
-
-                                </div>
-                                <div id="taskCounts" style="margin-top: 20px;">
-                                    <h4>Task Status Counts:</h4>
-                                    <ul id="statusList"></ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             @endrole
+
             {{-- <div class="row">
                 <div class="col-12 grid-margin">
                     <div class="card">
@@ -379,59 +376,78 @@
             const projectId = this.value;
 
             const teamTasksBody = document.getElementById('teamTasksBody');
-            const statusList = document.getElementById('statusList');
 
-            // Clear current data
-            teamTasksBody.innerHTML = '<tr><td colspan="5" class="text-center">Loading...</td></tr>';
-            statusList.innerHTML = '';
+            teamTasksBody.innerHTML = '<tr><td colspan="6" class="text-center">Loading...</td></tr>';
 
             if (projectId) {
                 fetch(`/projects/${projectId}/team-tasks`)
                     .then(response => response.json())
                     .then(data => {
-                        updateTeamList(data.team, data.projectTitle);
-                        updateTaskStatusCounts(data.taskCounts);
+                        updateTable(data);
                     })
                     .catch(error => {
                         console.error('Error fetching data:', error);
-                        teamTasksBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Error loading data.</td></tr>';
+                        teamTasksBody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading data.</td></tr>';
                     });
             } else {
-                teamTasksBody.innerHTML = '<tr><td colspan="5" class="text-center">No data available. Please select a project.</td></tr>';
+                teamTasksBody.innerHTML = '<tr><td colspan="6" class="text-center">No data available. Please select a project.</td></tr>';
             }
         });
 
-        function updateTeamList(team, projectTitle) {
+        function updateTable(data) {
             const teamTasksBody = document.getElementById('teamTasksBody');
-            if (team.length === 0) {
-                teamTasksBody.innerHTML = '<tr><td colspan="5" class="text-center">No team members found for this project.</td></tr>';
-            } else {
-                teamTasksBody.innerHTML = '';
-                team.forEach(member => {
-                    const row = `
+
+            if (!data || data.team.length === 0) {
+                teamTasksBody.innerHTML = '<tr><td colspan="6" class="text-center">No team members found for this project.</td></tr>';
+                return;
+            }
+
+            // Populate table rows
+            teamTasksBody.innerHTML = '';
+            data.team.forEach(member => {
+                if (member.tasks.length > 0) {
+                    member.tasks.forEach(task => {
+                        const currentDate = new Date();
+                        const taskDeadline = new Date(task.deadline);
+                        const isOverdue = task.deadline && taskDeadline < currentDate;
+
+                        const deadlineStyle = isOverdue ? 'color: red; font-weight: bold;' : '';
+
+                        const statusBadge = task.status === 'completed' ?
+                            '<span class="badge badge-success">Completed</span>' :
+                            task.status === 'deployed' ?
+                            '<span class="badge badge-info">Deployed</span>' :
+                            task.status === 'to-do' ?
+                            '<span class="badge badge-danger">To Do</span>' :
+                            '-';
+
+                        const row = `
                     <tr>
                         <td>${member.name}</td>
-                        <td>${projectTitle}</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
+                        <td>${member.taskCounts.todo}</td>
+                        <td>${member.taskCounts.completed}</td>
+                        <td>${member.taskCounts.deployed}</td>
+                        <td style="${deadlineStyle}">${task.deadline || '-'}</td>
+                        <td>${statusBadge}</td>
                     </tr>
                 `;
+                        teamTasksBody.innerHTML += row;
+                    });
+                } else {
+                    const row = `
+                <tr>
+                    <td>${member.name}</td>
+                    <td>${member.taskCounts.todo}</td>
+                    <td>${member.taskCounts.completed}</td>
+                    <td>${member.taskCounts.deployed}</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            `;
                     teamTasksBody.innerHTML += row;
-                });
-            }
-        }
-
-        function updateTaskStatusCounts(taskCounts) {
-            const statusList = document.getElementById('statusList');
-            if (taskCounts.length === 0) {
-                statusList.innerHTML = '<li>No tasks available for this project.</li>';
-            } else {
-                taskCounts.forEach(task => {
-                    const listItem = `<li>${task.status.toUpperCase()}: ${task.count}</li>`;
-                    statusList.innerHTML += listItem;
-                });
-            }
+                }
+            });
         }
     </script>
+
 @endsection
