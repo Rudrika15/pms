@@ -68,21 +68,6 @@
         <!-- main-panel ends -->
     </div>
 
-    {{-- sweet alert --}}
-    {{-- <script>
-        Swal.fire({
-            title: 'Error!',
-            text: 'Failed to update the product status.',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            customClass: {
-                popup: 'custom-popup',
-                title: 'custom-title',
-                confirmButton: 'custom-confirm-button'
-            }
-        });
-    </script> --}}
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     {{-- sweet alert js  --}}

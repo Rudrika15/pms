@@ -4,7 +4,10 @@
     <div class="container">
         <div class="d-flex justify-content-between">
             <h1>Project List</h1>
-            <a href="{{ route('project.create') }}" style="float: right" class="btn btn-sm btn-primary mb-3">Add Project</a>
+            @if (Auth::user()->roles[0]->name != 'User')
+                <a href="{{ route('project.create') }}" style="float: right" class="btn btn-sm btn-primary mb-3">Add
+                    Project</a>
+            @endif
         </div>
 
         <div class="table-responsive">
@@ -13,9 +16,11 @@
                     <th>#</th>
                     <th>Title</th>
                     <th>Detail</th>
-                    <th>Git Link</th>
+                    <th>Links</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    @if (Auth::user()->roles[0]->name != 'User')
+                        <th>Action</th>
+                    @endif
                 </thead>
                 <tbody>
                     @foreach ($project as $item)
@@ -25,15 +30,18 @@
                             <td class="text-wrap">{{ $item->detail }}</td>
                             <td class="text-wrap">{{ $item->git_link }}</td>
                             <td>{{ $item->status }}</td>
-                            <td>
-                                <div class="d-flex mt-3 mb-3 gap-2">
-                                    <a href="{{ route('project.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                            @if (Auth::user()->roles[0]->name != 'User')
+                                <td>
+                                    <div class="d-flex mt-3 mb-3 gap-2">
+                                        <a href="{{ route('project.edit', $item->id) }}"
+                                            class="btn btn-sm btn-primary">Edit</a>
 
-                                    <a href="{{ route('project.destroy', $item->id) }}"
-                                        data-url= "{{ route('project.destroy', $item->id) }}"
-                                        class="btn btn-sm btn-danger delete-button">Delete</a>
-                                </div>
-                            </td>
+                                        <a href="{{ route('project.destroy', $item->id) }}"
+                                            data-url= "{{ route('project.destroy', $item->id) }}"
+                                            class="btn btn-sm btn-danger delete-button">Delete</a>
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
