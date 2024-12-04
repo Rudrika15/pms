@@ -39,6 +39,7 @@ class PmsTaskController extends Controller
                 pmsTask::where('project_id', $projectId)
                     ->whereIn('status', $statuses)
                     ->with('comment')
+                    ->orderBy('created_at', 'desc')
                     ->get()
                     ->groupBy('status')
             );

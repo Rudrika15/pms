@@ -173,14 +173,34 @@
                                     data-task-id="{{ $item->id }}">
                                     {{ $item->title }}
                                 </a>
-                                <select class="form-select status mt-2" name="status" data-task-id="{{ $item->id }}">
-                                    @foreach ($statuses as $dropdownStatus)
-                                        <option value="{{ $dropdownStatus }}"
-                                            {{ $item->status === $dropdownStatus ? 'selected' : '' }}>
-                                            {{ ucfirst($dropdownStatus) }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                @if (illuminate\Support\Facades\Auth::user()->roles[0]->name == 'User')
+                                    @if ($item->user_id == illuminate\Support\Facades\Auth::user()->id)
+                                        <select class="form-select status mt-2" name="status"
+                                            data-task-id="{{ $item->id }}">
+                                            @foreach ($statuses as $dropdownStatus)
+                                                <option value="{{ $dropdownStatus }}"
+                                                    {{ $item->status === $dropdownStatus ? 'selected' : '' }}>
+                                                    {{ ucfirst($dropdownStatus) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <p class="mt-2 text-capitalize rounded border border-secondary">
+                                            {{ $item->status }}
+                                        </p>
+                                    @endif
+                                @else
+                                    <select class="form-select status mt-2" name="status"
+                                        data-task-id="{{ $item->id }}">
+                                        @foreach ($statuses as $dropdownStatus)
+                                            <option value="{{ $dropdownStatus }}"
+                                                {{ $item->status === $dropdownStatus ? 'selected' : '' }}>
+                                                {{ ucfirst($dropdownStatus) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                @endif
+
                                 <div class="mt-2">
                                     @if (illuminate\Support\Facades\Auth::user()->roles[0]->name == 'User')
                                         <p>{{ explode(' ', $item->user->name)[0] }}</p>
