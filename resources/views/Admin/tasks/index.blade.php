@@ -48,17 +48,20 @@
             background-color: #f9f9f9;
         }
 
-        h2 {
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .h2 {
             position: -webkit-sticky;
             /* Safari */
             background: #5b5d5c;
             border-radius: 10px;
             color: white;
             box-shadow: -1px 7px 20px 0px #d3d3d3;
+        }
+
+        .h2 h2 {
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .left-col {
@@ -126,6 +129,18 @@
             transform-box: fill-box;
         }
 
+        .kanban-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 20px;
+            /* Adds spacing between columns */
+            overflow-x: auto;
+            /* Horizontal scroll for overflow */
+            padding: 20px;
+        }
+
+
         @keyframes rotateClockwise {
             from {
                 transform: rotate(0deg);
@@ -161,7 +176,9 @@
         <div class="kanban-board gap-3">
             @foreach ($tasksByStatus as $status => $tasks)
                 <div class="kanban-column" id="{{ $status }}">
-                    <h2>{{ ucfirst($status) }}</h2>
+                    <div class="h2">
+                        <h2>{{ ucfirst($status) }}</h2>
+                    </div>
                     @if ($tasks->isEmpty())
                         <p>No tasks available.</p>
                     @else
