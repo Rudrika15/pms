@@ -31,8 +31,11 @@
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
                     @if (Auth::user()->roles[0]->name != 'User')
-                        <li class="nav-item"> <a class="nav-link" href="{{ route('project.create') }}">Add New
-                                Project</a>
+                        <li class="">
+                            <a class="btn btn-sm btn-primary shadow-none d-flex align-items-center justify-content-center text-nowrap gap-2"
+                                href="{{ route('project.create') }}">
+                                <i class="fa fa-plus"></i> Add New Project
+                            </a>
                         </li>
                     @endif
 
