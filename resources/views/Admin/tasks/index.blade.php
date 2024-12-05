@@ -13,17 +13,16 @@
             background-color: #fff;
             border-radius: 8px;
             width: 40%;
-            padding: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            min-height: 70vh;
-            max-height: 100vh;
-            overflow-y: scroll;
+            /* border: #878887 solid 2px; */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+
         }
 
-        .kanban-column h2 {
+        .kanban-column .h2 {
             text-align: center;
-            font-size: 1.5rem;
             margin-bottom: 20px;
+            background-color: white;
         }
 
         .kanban-card {
@@ -31,9 +30,9 @@
             border: 2px solid #ccc;
             border-radius: 5px;
             margin: 10px 0;
-            padding: 15px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            padding: 10px;
         }
 
         .kanban-card:hover {
@@ -48,13 +47,38 @@
             background-color: #f9f9f9;
         }
 
-        .h2 {
-            position: -webkit-sticky;
-            /* Safari */
-            background: #5b5d5c;
+        .content {
+            padding: 10px;
+            min-height: 50vh;
+            max-height: 65vh;
+            overflow-y: scroll;
+            position: relative;
+            margin-top: 30px;
+        }
+
+        .content::-webkit-scrollbar {
             border-radius: 10px;
-            color: white;
-            box-shadow: -1px 7px 20px 0px #d3d3d3;
+            width: 4px;
+            margin-top: 10px;
+            scroll-behavior: smooth;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background-color: #ff6600;
+            border-radius: 5px;
+            margin-top: 15px;
+
+        }
+
+        .h2 {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: white;
+            height: 20px;
+            margin: 0;
+            padding: 0;
+            border-radius: 10px;
         }
 
         .h2 h2 {
@@ -62,6 +86,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 23px;
+            height: 50px;
+            border-bottom: 2px solid #878887;
         }
 
         .left-col {
@@ -73,16 +100,19 @@
         }
 
         .sticky-form {
-            position: sticky;
+            position: fixed;
+            /* Stick to the bottom of the viewport */
             bottom: 0;
-            /* Add background to cover any content behind it */
-            padding: 10px 0;
-            z-index: 10;
-            /* Ensure the form stays above other content */
+            /* background-color: #f8f9fa; */
+            /* Match modal styling */
+            padding: 10px;
+            /* z-index: 10; */
+            width: 28%;
+            margin-bottom: 10px;
         }
 
         .comments {
-            max-height: 450px;
+            max-height: 400px;
             overflow-y: scroll;
         }
 
@@ -105,6 +135,8 @@
             background-color: #f1f1f1;
             border-radius: 10px;
         }
+
+
 
         .loader {
             position: fixed;
@@ -129,18 +161,6 @@
             transform-box: fill-box;
         }
 
-        .kanban-container {
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            gap: 20px;
-            /* Adds spacing between columns */
-            overflow-x: auto;
-            /* Horizontal scroll for overflow */
-            padding: 20px;
-        }
-
-
         @keyframes rotateClockwise {
             from {
                 transform: rotate(0deg);
@@ -161,8 +181,8 @@
             }
         }
     </style>
-    <div class="container">
-        <div class="d-flex  justify-content-between">
+    <div class="container p-5">
+        {{-- <div class="d-flex  justify-content-between">
             <h1>Task List</h1>
             <a href="{{ route('tasks.create', $id) }}" class="btn btn-sm mb-4 btn-primary">
                 <span>
@@ -170,28 +190,51 @@
                     Add New Task
                 </span>
             </a>
-        </div>
+        </div> --}}
         {{-- <a href="{{ route('tasks.create') }}" style="float: right" class="btn btn-primary mb-3">Add Task</a> --}}
 
-        <div class="kanban-board gap-3">
+        <div class="kanban-board gap-3 ">
             @foreach ($tasksByStatus as $status => $tasks)
                 <div class="kanban-column" id="{{ $status }}">
-                    <div class="h2">
-                        <h2>{{ ucfirst($status) }}</h2>
+                    <div class="h2 w-100 ">
+                        <h2 class="d-flex justify-content-between align-items-center">{{ ucfirst($status) }}
+                            @if ($status == 'to-do')
+                                <a href="{{ route('tasks.create', $id) }}" class="text-dark" style="float: right">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            @endif
+                        </h2>
+
                     </div>
                     @if ($tasks->isEmpty())
-                        <p>No tasks available.</p>
+                        <p class="mt-5 p-5">No tasks available.</p>
                     @else
-                        @foreach ($tasks as $item)
-                            <div class="kanban-card" id="status" draggable="true">
-                                <!-- Task title links to its unique modal -->
-                                <a href="#" class="kanban-card-title text-decoration-none text-dark"
-                                    data-bs-toggle="modal" data-bs-target="#modal-{{ $item->id }}"
-                                    data-task-id="{{ $item->id }}">
-                                    {{ $item->title }}
-                                </a>
-                                @if (illuminate\Support\Facades\Auth::user()->roles[0]->name == 'User')
-                                    @if ($item->user_id == illuminate\Support\Facades\Auth::user()->id)
+                        <div class="content">
+                            @foreach ($tasks as $item)
+                                <div class="kanban-card" id="status" draggable="true">
+                                    <!-- Task title links to its unique modal -->
+                                    <a href="#" class="kanban-card-title text-decoration-none text-dark"
+                                        data-bs-toggle="modal" data-bs-target="#modal-{{ $item->id }}"
+                                        data-task-id="{{ $item->id }}">
+                                        {{ $item->title }}
+                                    </a>
+                                    @if (illuminate\Support\Facades\Auth::user()->roles[0]->name == 'User')
+                                        @if ($item->user_id == illuminate\Support\Facades\Auth::user()->id)
+                                            <select class="form-select status mt-2" name="status"
+                                                data-task-id="{{ $item->id }}">
+                                                @foreach ($statuses as $dropdownStatus)
+                                                    <option value="{{ $dropdownStatus }}"
+                                                        {{ $item->status === $dropdownStatus ? 'selected' : '' }}>
+                                                        {{ ucfirst($dropdownStatus) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <p class="mt-2 text-capitalize rounded border border-secondary">
+                                                {{ $item->status }}
+                                            </p>
+                                        @endif
+                                    @else
                                         <select class="form-select status mt-2" name="status"
                                             data-task-id="{{ $item->id }}">
                                             @foreach ($statuses as $dropdownStatus)
@@ -201,104 +244,110 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                    @else
-                                        <p class="mt-2 text-capitalize rounded border border-secondary">
-                                            {{ $item->status }}
-                                        </p>
                                     @endif
-                                @else
-                                    <select class="form-select status mt-2" name="status"
-                                        data-task-id="{{ $item->id }}">
-                                        @foreach ($statuses as $dropdownStatus)
-                                            <option value="{{ $dropdownStatus }}"
-                                                {{ $item->status === $dropdownStatus ? 'selected' : '' }}>
-                                                {{ ucfirst($dropdownStatus) }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                @endif
 
-                                <div class="mt-2">
-                                    @if (illuminate\Support\Facades\Auth::user()->roles[0]->name == 'User')
-                                        <p>{{ explode(' ', $item->user->name)[0] }}</p>
-                                    @else
-                                        <select name="user_id" class="form-select user_id"
-                                            data-task-id="{{ $item->id }}" id="user_id">
-                                            @foreach ($users as $user)
-                                                <option value="{{ $user->user->id }}"
-                                                    {{ $item->user_id == $user->user->id ? 'selected' : '' }}>
-                                                    {{ explode(' ', $user->user->name)[0] }}</option>
-                                            @endforeach
-                                        </select>
-                                    @endif
+                                    <div class="mt-2">
+                                        @if (illuminate\Support\Facades\Auth::user()->roles[0]->name == 'User')
+                                            <p>{{ explode(' ', $item->user->name)[0] }}</p>
+                                        @else
+                                            <select name="user_id" class="form-select user_id"
+                                                data-task-id="{{ $item->id }}" id="user_id">
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->user->id }}"
+                                                        {{ $item->user_id == $user->user->id ? 'selected' : '' }}>
+                                                        {{ explode(' ', $user->user->name)[0] }}</option>
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Modal for each task -->
-                            <div class="modal fade" id="modal-{{ $item->id }}" tabindex="-1"
-                                aria-labelledby="modalLabel-{{ $item->id }}" data-bs-backdrop="static"
-                                data-bs-keyboard="false" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
+                                <!-- Modal for each task -->
+                                <div class="modal fade" id="modal-{{ $item->id }}" tabindex="-1"
+                                    aria-labelledby="modalLabel-{{ $item->id }}" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
 
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title" id="modalLabel-{{ $item->id }}">
-                                                {{ $item->title }}</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title" id="modalLabel-{{ $item->id }}">
+                                                    {{ $item->title }}</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
 
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-8 left-col">
-
-                                                    <p>{{ $item->detail }}</p>
-                                                    Assigned To : {{ $item->user->name ?? '' }}
-
-                                                </div>
-                                                <div class="col-md-4 right-col">
-                                                    <div class="comments">
-                                                        @if ($item->comment && count($item->comment) > 0)
-                                                            @foreach ($item->comment as $comment)
-                                                                <p>{{ $comment->comment }}</p>
-                                                                <p>{{ $comment->user->name ?? '' }}</p>
-                                                                <hr>
-                                                            @endforeach
-                                                        @else
-                                                            <p>No comments available for this task.</p>
-                                                            <hr>
-                                                        @endif
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-8 left-col">
+                                                        <div class="d-flex gap-2"><b>Details : </b>
+                                                            <p>{{ $item->detail }}</p>
+                                                        </div>
+                                                        <div class="d-flex gap-2"> <b>Assigned To : </b>
+                                                            <p>{{ $item->user->name ?? '' }}</p>
+                                                        </div>
+                                                        <div class="d-flex gap-2"> <b>Priority : </b>
+                                                            <p>{{ $item->priority }}</p>
+                                                        </div>
+                                                        <div class="d-flex gap-2"> <b>Deadline : </b>
+                                                            <p>{{ $item->deadline }}</p>
+                                                        </div>
+                                                        <div class="d-flex gap-2"> <b>Status : </b>
+                                                            <p>{{ $item->status }}</p>
+                                                        </div>
                                                     </div>
-                                                    <!-- Sticky Comment Form -->
-                                                    <div class="text-box sticky-form">
-                                                        <form action="{{ route('comments.store') }}" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="task_id"
-                                                                value="{{ $item->id }}">
-                                                            <div class="mb-3">
-                                                                <div class="input-group mb-3">
-                                                                    <input type="text" class="form-control"
-                                                                        placeholder="Enter Comment"
-                                                                        aria-label="Enter Comment" name="comment"
-                                                                        aria-describedby="button-addon2">
-                                                                    <button class="btn btn-primary" type="submit"
-                                                                        id="button-addon2">Submit</button>
+                                                    <div class="col-md-4 right-col">
+                                                        <div class="heading">
+                                                            <h3>Comments</h3>
+                                                            <hr>
+                                                        </div>
+                                                        <div class="comments">
+                                                            @if ($item->comment && count($item->comment) > 0)
+                                                                @foreach ($item->comment as $comment)
+                                                                    <b>{{ explode(' ', $comment->user->name)[0] }} </b>
+                                                                    <br> <br>
+                                                                    <p class="text-muted">{{ $comment->comment }}</p>
+                                                                    <hr>
+                                                                @endforeach
+                                                            @else
+                                                                <div class="p-5 text-center">
+
+                                                                    <p>No comments available for this task.</p>
                                                                 </div>
-                                                            </div>
-                                                        </form>
+                                                                {{-- <hr> --}}
+                                                            @endif
+                                                        </div>
+                                                        <!-- Sticky Comment Form -->
+                                                        <div class="text-box sticky-form">
+                                                            <form action="{{ route('comments.store') }}" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="task_id"
+                                                                    value="{{ $item->id }}">
+                                                                <div class="mb-3">
+                                                                    <div class="input-group comment-input mb-3">
+                                                                        <input type="text" class="form-control"
+                                                                            placeholder="Enter Comment"
+                                                                            aria-label="Enter Comment" name="comment"
+                                                                            aria-describedby="button-addon2">
+                                                                        <button class="btn btn-primary" type="submit"
+                                                                            id="button-addon2">Submit</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        {{-- <div class="modal-footer">
+                                            {{-- <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
                                         </div> --}}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     @endif
+
                 </div>
             @endforeach
             <div class="loader d-none">
