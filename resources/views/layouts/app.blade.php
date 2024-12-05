@@ -64,7 +64,24 @@
         <!-- partial:partials/_sidebar.html -->
         @include('layouts.navbar')
         <!-- partial -->
-        @yield('content')
+        <div class="main-panel">
+            <div class="content-wrapper">
+                @yield('content')
+            </div>
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer ">
+                <div class="container-fluid d-flex justify-content-between">
+                    <span class="text-muted d-block text-center text-sm-start d-sm-inline-block"> Copyright ©
+                        flipcodesolutions.com
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>
+                    </span>
+
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
         <!-- main-panel ends -->
     </div>
 

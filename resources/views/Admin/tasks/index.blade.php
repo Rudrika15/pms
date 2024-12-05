@@ -86,7 +86,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 23px;
+            font-size: 20px;
             height: 50px;
             border-bottom: 2px solid #878887;
         }
@@ -101,14 +101,9 @@
 
         .sticky-form {
             position: fixed;
-            /* Stick to the bottom of the viewport */
-            bottom: 0;
-            /* background-color: #f8f9fa; */
-            /* Match modal styling */
             padding: 10px;
-            /* z-index: 10; */
             width: 28%;
-            margin-bottom: 10px;
+            bottom: 10px;
         }
 
         .comments {
@@ -181,7 +176,7 @@
             }
         }
     </style>
-    <div class="container p-5">
+    <div class="container mb-5">
         {{-- <div class="d-flex  justify-content-between">
             <h1>Task List</h1>
             <a href="{{ route('tasks.create', $id) }}" class="btn btn-sm mb-4 btn-primary">

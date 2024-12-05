@@ -1,68 +1,68 @@
 @extends('layouts.app')
 @section('content')
-    <div class="main-panel">
-        <div class="content-wrapper">
-            <div class="page-header">
-                <h3 class="page-title">
-                    <span class="page-title-icon bg-gradient-primary text-white me-2">
-                        <i class="mdi mdi-home"></i>
-                    </span> Dashboard
-                </h3>
 
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-home"></i>
+            </span> Dashboard
+        </h3>
+
+    </div>
+    <div class="row">
+        @role('Admin')
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-danger card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-normal mb-3">Projects <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                        </h4>
+                        <h2 class="mb-5">{{ $projectCount }}</h2>
+
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                @role('Admin')
-                    <div class="col-md-4 stretch-card grid-margin">
-                        <div class="card bg-gradient-danger card-img-holder text-white">
-                            <div class="card-body">
-                                <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                                <h4 class="font-weight-normal mb-3">Projects <i class="mdi mdi-chart-line mdi-24px float-right"></i>
-                                </h4>
-                                <h2 class="mb-5">{{ $projectCount }}</h2>
+        @else
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-danger card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-normal mb-3">Total Tasks <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                        </h4>
+                        <h2 class="mb-5">{{ $totalTask }}</h2>
 
-                            </div>
-                        </div>
                     </div>
-                @else
-                    <div class="col-md-4 stretch-card grid-margin">
-                        <div class="card bg-gradient-danger card-img-holder text-white">
-                            <div class="card-body">
-                                <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                                <h4 class="font-weight-normal mb-3">Total Tasks <i class="mdi mdi-chart-line mdi-24px float-right"></i>
-                                </h4>
-                                <h2 class="mb-5">{{ $totalTask }}</h2>
+                </div>
+            </div>
+        @endrole
+        @role('Admin')
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-info card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-normal mb-3">Users <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                        </h4>
+                        <h2 class="mb-5">{{ $userCount }}</h2>
 
-                            </div>
-                        </div>
                     </div>
-                @endrole
-                @role('Admin')
-                    <div class="col-md-4 stretch-card grid-margin">
-                        <div class="card bg-gradient-info card-img-holder text-white">
-                            <div class="card-body">
-                                <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                                <h4 class="font-weight-normal mb-3">Users <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
-                                </h4>
-                                <h2 class="mb-5">{{ $userCount }}</h2>
+                </div>
+            </div>
+        @else
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-info card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-normal mb-3">Pending Tasks <i
+                                class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                        </h4>
+                        <h2 class="mb-5">{{ $pendingTask }}</h2>
 
-                            </div>
-                        </div>
                     </div>
-                @else
-                    <div class="col-md-4 stretch-card grid-margin">
-                        <div class="card bg-gradient-info card-img-holder text-white">
-                            <div class="card-body">
-                                <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
-                                <h4 class="font-weight-normal mb-3">Pending Tasks <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
-                                </h4>
-                                <h2 class="mb-5">{{ $pendingTask }}</h2>
+                </div>
+            </div>
+        @endrole
 
-                            </div>
-                        </div>
-                    </div>
-                @endrole
-
-                {{-- <div class="col-md-4 stretch-card grid-margin">
+        {{-- <div class="col-md-4 stretch-card grid-margin">
                     <div class="card bg-gradient-success card-img-holder text-white">
                         <div class="card-body">
                             <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
@@ -73,49 +73,50 @@
                         </div>
                     </div>
                 </div> --}}
-            </div>
+    </div>
 
-            @role('Admin')
-                <div class="row">
-                    <div class="col-12 grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Recent Tickets</h4>
-                                <div class="table-responsive">
+    @role('Admin')
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Recent Tickets</h4>
+                        <div class="table-responsive">
 
-                                    <select name="project" id="projects" class="form-control">
-                                        <option value="">Select Project</option>
-                                        @foreach ($allProjects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->title }}</option>
-                                        @endforeach
-                                    </select>
-                                    <br>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Assigned to</th>
-                                                <th>Todo</th>
-                                                <th>Completed</th>
-                                                <th>Deployed</th>
-                                                <th>Due Date</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="teamTasksBody">
-                                            <tr>
-                                                <td colspan="6" class="text-center">No data available. Please select a project.</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <select name="project" id="projects" class="form-control">
+                                <option value="">Select Project</option>
+                                @foreach ($allProjects as $project)
+                                    <option value="{{ $project->id }}">{{ $project->title }}</option>
+                                @endforeach
+                            </select>
+                            <br>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Assigned to</th>
+                                        <th>Todo</th>
+                                        <th>Completed</th>
+                                        <th>Deployed</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="teamTasksBody">
+                                    <tr>
+                                        <td colspan="6" class="text-center">No data available. Please select a
+                                            project.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
-            @endrole
+            </div>
+        </div>
+    @endrole
 
-            {{-- <div class="row">
+    {{-- <div class="row">
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <div class="card-body">
@@ -183,7 +184,7 @@
                     </div>
                 </div>
             </div> --}}
-            {{-- <div class="row">
+    {{-- <div class="row">
                 <div class="col-md-7 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -209,7 +210,7 @@
             </div> --}}
 
 
-            {{-- <div class="row">
+    {{-- <div class="row">
                 <div class="col-md-7 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -355,21 +356,7 @@
                     </div>
                 </div>
             </div> --}}
-        </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-            <div class="container-fluid d-flex justify-content-between">
-                <span class="text-muted d-block text-center text-sm-start d-sm-inline-block"> Copyright © flipcodesolutions.com
-                    <script>
-                        document.write(new Date().getFullYear());
-                    </script>
-                </span>
 
-            </div>
-        </footer>
-        <!-- partial -->
-    </div>
 
     <script>
         document.getElementById('projects').addEventListener('change', function() {
@@ -387,10 +374,12 @@
                     })
                     .catch(error => {
                         console.error('Error fetching data:', error);
-                        teamTasksBody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading data.</td></tr>';
+                        teamTasksBody.innerHTML =
+                            '<tr><td colspan="6" class="text-center text-danger">Error loading data.</td></tr>';
                     });
             } else {
-                teamTasksBody.innerHTML = '<tr><td colspan="6" class="text-center">No data available. Please select a project.</td></tr>';
+                teamTasksBody.innerHTML =
+                    '<tr><td colspan="6" class="text-center">No data available. Please select a project.</td></tr>';
             }
         });
 
@@ -398,7 +387,8 @@
             const teamTasksBody = document.getElementById('teamTasksBody');
 
             if (!data || data.team.length === 0) {
-                teamTasksBody.innerHTML = '<tr><td colspan="6" class="text-center">No team members found for this project.</td></tr>';
+                teamTasksBody.innerHTML =
+                    '<tr><td colspan="6" class="text-center">No team members found for this project.</td></tr>';
                 return;
             }
 

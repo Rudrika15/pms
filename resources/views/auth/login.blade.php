@@ -165,10 +165,10 @@
 
                 <button type="submit" class="login-btn">Login</button>
 
-                <div class="links">
+                {{-- <div class="links">
                     <a href="#">Forgot password?</a>
                     <a href="#">Don't have an account?</a>
-                </div>
+                </div> --}}
             </form>
         </div>
     </main>

@@ -41,7 +41,7 @@
 
                     @foreach ($projects as $item)
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('tasks.index') }}/{{ $item->id }}">
+                            <a class="nav-link " href="{{ route('tasks.index') }}/{{ $item->id }}">
                                 {{ $item->title }}
                             </a>
                         </li>
