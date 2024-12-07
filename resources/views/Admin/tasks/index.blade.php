@@ -312,30 +312,27 @@
                                                             @endif
                                                         </div>
                                                         <!-- Sticky Comment Form -->
-                                                        <div class="text-box sticky-form">
-                                                            <form action="{{ route('comments.store') }}" method="POST">
-                                                                @csrf
-                                                                <input type="hidden" name="task_id"
-                                                                    value="{{ $item->id }}">
-                                                                <div class="mb-3">
-                                                                    <div class="input-group comment-input mb-3">
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="Enter Comment"
-                                                                            aria-label="Enter Comment" name="comment"
-                                                                            aria-describedby="button-addon2">
-                                                                        <button class="btn btn-primary" type="submit"
-                                                                            id="button-addon2">Submit</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            {{-- <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                        </div> --}}
+                                            <div class="modal-footer">
+                                                <div class="text-box">
+                                                    <form action="{{ route('comments.store') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="task_id" value="{{ $item->id }}">
+                                                        <div class="mb-3">
+                                                            <div class="input-group comment-input mb-3">
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="Enter Comment" aria-label="Enter Comment"
+                                                                    name="comment" aria-describedby="button-addon2">
+                                                                <button class="btn btn-primary" type="submit"
+                                                                    id="button-addon2">Submit</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
