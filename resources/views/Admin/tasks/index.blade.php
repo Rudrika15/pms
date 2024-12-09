@@ -280,7 +280,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <div class="text-box">
+                                                <div class="text-box ">
                                                     <form action="{{ route('comments.store') }}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="task_id" value="{{ $item->id }}">
