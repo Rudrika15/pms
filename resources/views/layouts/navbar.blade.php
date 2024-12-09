@@ -1,6 +1,6 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
-        <li class="nav-item nav-profile">
+        <li class="nav-item nav-profile border-bottom">
             <a href="#" class="nav-link">
                 <div class="nav-profile-image p-2">
                     {{-- <img src="{{ asset('assets/images/faces/face1.jpg') }}" alt="profile"> --}}
@@ -8,7 +8,7 @@
                     <span class="login-status online"></span>
                     <!--change to offline or busy as needed-->
                 </div>
-                <div class="nav-profile-text d-flex flex-column">
+                <div class="nav-profile-text d-flex flex-column ">
                     <span class="font-weight-bold mb-2">{{ Auth::user()->name }}</span>
                     <span class="text-secondary text-small">{{ Auth::user()->roles[0]->name }}</span>
                 </div>
@@ -22,8 +22,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                aria-controls="ui-basic">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-title">Projects</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-crosshairs-gps menu-icon"></i>
@@ -32,8 +31,7 @@
                 <ul class="nav flex-column sub-menu">
                     @if (Auth::user()->roles[0]->name != 'User')
                         <li class="">
-                            <a class="btn btn-sm btn-primary shadow-none d-flex align-items-center justify-content-center text-nowrap gap-2"
-                                href="{{ route('project.create') }}">
+                            <a class="btn btn-sm btn-primary shadow-none d-flex align-items-center justify-content-center text-nowrap gap-2" href="{{ route('project.create') }}">
                                 <i class="fa fa-plus"></i> Add New Project
                             </a>
                         </li>
