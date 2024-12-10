@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\TaskCreated;
+use App\Models\PmsComment;
+use App\Models\PmsProject;
 use App\Models\PmsTask;
 use App\Models\PmsTeam;
 use App\Models\User;
@@ -51,6 +53,13 @@ class PmsTaskController extends Controller
         return view('admin.tasks.index', compact('tasksByStatus', 'id', 'statuses', 'users'));
     }
 
+    public function TaskDetails($id)
+    {
+        $tasks = PmsTask::findOrFail($id);
+        $comments = PmsComment::where('task_id', $id)->get();
+        return \view('admin.tasks.details', compact('tasks', 'comments'));
+    }
+
     // Show form to create a new task
     public function create($projectId)
     {
@@ -78,8 +87,12 @@ class PmsTaskController extends Controller
         $pmsTask->priority = $request->priority ?? 'low';
         $pmsTask->deadline = $request->deadline ?? Carbon::now();
         if ($request->hasFile('attachment')) {
-            $pmsTask->attachment = $request->file('attachment')->store('attachments');
+            $file = $request->file('attachment');
+            $filename = time() . '_' . $file->getClientOriginalName(); // Generate a unique filename
+            $file->move(public_path('attachments'), $filename); // Save to the public/attachments folder
+            $pmsTask->attachment = 'attachments/' . $filename; // Save the relative path to the database
         }
+
 
         $pmsTask->save();
 
@@ -97,14 +110,19 @@ class PmsTaskController extends Controller
     public function edit($id)
     {
         $task = PmsTask::findOrFail($id);
-        return view('admin.tasks.edit', compact('task'));
+        $task->project_id = $task->project_id;
+        // $project = PmsProject::findOrFail($task->project_id);
+        $project_user = PmsProject::where('id', $task->project_id)
+            ->with('users')
+            ->get();
+
+        return view('admin.tasks.edit', compact('task', 'project_user'));
     }
 
     // Update an existing task
     public function update(Request $request, $id)
     {
         $request->validate([
-            'project_id' => 'required',
             'user_id' => 'required',
             'title' => 'required|string|max:255',
             'detail' => 'required|string',
@@ -115,7 +133,6 @@ class PmsTaskController extends Controller
         ]);
 
         $pmsTask = PmsTask::findOrFail($id);
-        $pmsTask->project_id = $request->project_id;
         $pmsTask->user_id = $request->user_id;
         $pmsTask->title = $request->title;
         $pmsTask->detail = $request->detail;
@@ -125,12 +142,22 @@ class PmsTaskController extends Controller
 
         // Handle file upload
         if ($request->hasFile('attachment')) {
-            $pmsTask->attachment = $request->file('attachment')->store('attachments');
+            $file = $request->file('attachment');
+            $filename = time() . '_' . $file->getClientOriginalName(); // Generate a unique filename
+
+            // Delete old file if it exists
+            if ($pmsTask->attachment && file_exists(public_path($pmsTask->attachment))) {
+                unlink(public_path($pmsTask->attachment));
+            }
+
+            // Save new file
+            $file->move(public_path('attachments'), $filename);
+            $pmsTask->attachment = 'attachments/' . $filename; // Save the relative path to the database
         }
 
         $pmsTask->save(); // Save the updated task
 
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
+        return redirect()->route('tasks.index', $request->project_id)->with('success', 'Task updated successfully.');
     }
 
     //update task status
