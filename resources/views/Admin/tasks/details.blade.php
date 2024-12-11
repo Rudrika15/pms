@@ -7,13 +7,12 @@
         }
 
         .cmt-form {
-            position: fixed;
-            width: 30%;
+            margin-top: 18px;
         }
 
         .card {
-            max-height: 70vh;
-            min-height: 70vh;
+            max-height: 72vh;
+            min-height: 72vh;
             overflow-y: scroll;
         }
     </style>
@@ -93,7 +92,7 @@
                                 @csrf
                                 <input type="hidden" name="task_id" value="{{ $tasks->id }}">
                                 <div class="mb-3">
-                                    <div class="input-group comment-input mb-3">
+                                    <div class="input-group  mb-3">
                                         <input type="text" class="form-control" placeholder="Enter Comment"
                                             aria-label="Enter Comment" name="comment" aria-describedby="button-addon2">
                                         <button class="btn btn-primary" type="submit" id="button-addon2">Submit</button>
