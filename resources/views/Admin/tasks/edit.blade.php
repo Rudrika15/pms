@@ -65,7 +65,7 @@
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
                         <input type="text" class="form-control" id="status" name="status"
-                            value="{{ $task->status }}">
+                            value="{{ $task->status }}" readonly>
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -87,8 +87,8 @@
                             <img src="{{ asset($task->attachment) }}" alt="" width="100" height="100"
                                 class="img-thumbnail mb-3" id="preview">
                         @else
-                            <img src="" alt="" width="100" height="100" class="d-none img-thumbnail mb-3"
-                                id="preview">
+                            <img src="" alt="" width="100" height="100"
+                                class="d-none img-thumbnail mb-3" id="preview">
                         @endif
                         <br>
                         <label for="attachment" class="form-label">Attachment</label>

@@ -17,7 +17,7 @@
 
             <div class="mb-3">
                 <label for="">Details</label>
-                <textarea class="form-control mb-3" name="detail"> {{ $project->detail }} </textarea>
+                <textarea class="form-control mb-3" name="detail" cols="30" rows="5"> {{ $project->detail }} </textarea>
                 @error('detail')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
