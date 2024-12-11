@@ -71,9 +71,10 @@
                         <div class="comments">
                             @if (count($comments) > 0)
                                 @foreach ($comments as $item)
-                                    <b>{{ explode(' ', $item->user->name)[0] }} </b>
+                                    <b>{{ explode(' ', $item->user->name)[0] }} </b> (
+                                    {{ $item->created_at->diffForHumans() }} )
                                     <br> <br>
-                                    <p class="text-muted">{{ $item->comment }} ( {{ $item->created_at->diffForHumans() }})
+                                    <p class="text-muted">{{ $item->comment }}
                                     </p>
                                     <hr>
                                 @endforeach
