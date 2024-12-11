@@ -11,7 +11,9 @@
                 <select name="project_id" class="form-select" id="">
                     <option value="" selected disabled>Select Project</option>
                     @foreach ($projects as $item)
-                        <option value="{{ $item->id }}">{{ $item->title }}</option>
+                        <option value="{{ $item->id }}" @if (url()->previous() == route('tasks.create', $item->id)) selected @endif disabled>
+                            {{ $item->title }}
+                        </option>
                     @endforeach
                 </select>
                 @error('project_id')

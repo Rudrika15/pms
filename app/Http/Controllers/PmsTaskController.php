@@ -47,15 +47,22 @@ class PmsTaskController extends Controller
             );
         // }
         // show users by project
-
         $users = PmsTeam::where('project_id', $projectId)->with('user')->get();
-
         return view('admin.tasks.index', compact('tasksByStatus', 'id', 'statuses', 'users'));
     }
 
-    public function TaskDetails($id)
+    public function TaskDetails($id = null)
     {
-        $tasks = PmsTask::findOrFail($id);
+        // id can be from the request search term from the url 
+        if (request('search')) {
+            $id = \request('search');
+        }
+
+        $tasks = PmsTask::find($id);
+        if (!$tasks) {
+            return redirect()->back()->with('error', 'Ticket not found!');
+        }
+
         $comments = PmsComment::where('task_id', $id)->get();
         return \view('admin.tasks.details', compact('tasks', 'comments'));
     }
@@ -157,7 +164,7 @@ class PmsTaskController extends Controller
 
         $pmsTask->save(); // Save the updated task
 
-        return redirect()->route('tasks.index', $request->project_id)->with('success', 'Task updated successfully.');
+        return redirect()->route('tasks.details', $id)->with('success', 'Task updated successfully.');
     }
 
     //update task status

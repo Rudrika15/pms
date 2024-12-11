@@ -6,37 +6,20 @@
             overflow-y: scroll;
         }
 
-        .comments::-webkit-scrollbar {
-            width: 3px;
-            background-color: aqua;
-            color: black;
-        }
-
-        .comments::-webkit-scrollbar-track {
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-            background-color: bisque;
-            color: aqua;
-        }
-
-        .comments::-webkit-scrollbar-thumb {
-            background-color: darkgrey;
-            outline: 1px solid slategrey;
-        }
-
         .cmt-form {
             position: fixed;
-            bottom: 10;
             width: 30%;
         }
 
         .card {
             max-height: 70vh;
             min-height: 70vh;
+            overflow-y: scroll;
         }
     </style>
     <div class="container">
         <img id="preview" class="preview img-fluid"
-            style="justify-content: center; align-items: center; display: none; width: 900px; height: 550px;  position: fixed;  z-index: 99" />
+            style="justify-content: center; align-items: center; display: none; width: 900px; height: 550px; object-fit: contain; background-color: rgba(0, 0, 0, 0.5);  position: fixed;  z-index: 9999" />
         <div class="row">
 
             <div class="col-md-6">
@@ -44,14 +27,18 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-center align-items-center">
                             <img src="{{ asset($tasks->attachment) }}" class="img-fluid" width="100"
-                                onclick="showPreview(this.src)" />
+                                onclick="showPreview(this.src)" alt="" />
                             {{-- <img src="{{ asset($tasks->attachment) }}" class="img-fluid" width="100" alt="" /> --}}
-
-
-
                         </div>
 
-                        <div class="d-flex gap-2 mt-5"><b>Details : </b>
+                        <div class="d-flex gap-2 mt-5"> <b>Title : </b>
+                            <p>{{ $tasks->title }}</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <b>ticket number : </b>
+                            <p>{{ $tasks->id }}</p>
+                        </div>
+                        <div class="d-flex gap-2 "><b>Details: </b>
                             <p>{{ $tasks->detail }}</p>
                         </div>
                         <div class="d-flex gap-2"> <b>Assigned To : </b>
@@ -68,14 +55,11 @@
                         </div>
                         <div class="d-flex gap-2">
                             <a href="{{ route('tasks.edit', $tasks->id) }}" class="btn btn-sm btn-primary">
-
                                 <i class="edit fa fa-edit"></i>
                             </a>
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <div class="col-md-6 ">
                 <div class="card">
@@ -89,7 +73,8 @@
                                 @foreach ($comments as $item)
                                     <b>{{ explode(' ', $item->user->name)[0] }} </b>
                                     <br> <br>
-                                    <p class="text-muted">{{ $item->comment }}</p>
+                                    <p class="text-muted">{{ $item->comment }} ( {{ $item->created_at->diffForHumans() }})
+                                    </p>
                                     <hr>
                                 @endforeach
                             @else

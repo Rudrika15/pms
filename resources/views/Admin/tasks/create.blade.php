@@ -10,16 +10,25 @@
                 <input type="hidden" value="{{ illuminate\Support\Facades\Auth::user()->id }}" name="user_id">
             @else
                 <div class="mb-3">
-                    <label for="user_id" class="form-label">User</label>
+                    @if (count($teamMember) == 0)
+                        <span>No member found, click here to create team --> </span>
+                        <a href="{{ route('teams.create') }}" class="btn btn-primary">
+                            create team
+                        </a>
+                    @else
+                        <label for="user_id" class="form-label">User</label>
 
-                    <select name="user_id" class="form-control user_id">
-                        <option value="" disabled selected> Select Team member</option>
-                        @foreach ($teamMember as $member)
-                            <option value="{{ $member->user_id }}"
-                                {{ old('user_id') == $member->user_id ? 'selected' : '' }}>{{ $member->user->name }}
-                            </option>
-                        @endforeach
-                    </select>
+
+                        <select name="user_id" class="form-control user_id">
+                            <option value="" disabled selected> Select Team member</option>
+                            @foreach ($teamMember as $member)
+                                <option value="{{ $member->user_id }}"
+                                    {{ old('user_id') == $member->user_id ? 'selected' : '' }}>{{ $member->user->name }}
+                                </option>
+                            @endforeach
+
+                        </select>
+                    @endif
 
                     @error('user_id')
                         <span class="text-danger">Please Select User</span>
@@ -64,7 +73,7 @@
             </div>
             <div class="mb-3">
                 <label for="attachment" class="form-label">Attachment</label>
-                <input type="file" class="form-control" id="attachment" name="attachment">
+                <input type="file" class="form-control bg-white" id="attachment" name="attachment">
                 @error('attachment')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror

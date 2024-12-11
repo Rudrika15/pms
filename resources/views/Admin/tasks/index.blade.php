@@ -35,17 +35,17 @@
             padding: 10px;
         }
 
-        .kanban-card:hover {
-            background-color: #f0f0f0;
-        }
+        /* .kanban-card:hover {
+                                                                                    background-color: #f0f0f0;
+                                                                                }
 
-        .kanban-card:active {
-            background-color: #ddd;
-        }
+                                                                                .kanban-card:active {
+                                                                                    background-color: #ddd;
+                                                                                } */
 
-        .kanban-column:hover {
-            background-color: #f9f9f9;
-        }
+        /* .kanban-column:hover {
+                                                                                background-color: #f9f9f9;
+                                                                            } */
 
         .content {
             padding: 10px;
@@ -150,6 +150,19 @@
         }
     </style>
     <div class="container mb-5">
+        {{-- new form for search task by id  --}}
+        <div class="">
+            <form action="{{ route('tasks.details') }}" method="post">
+                @csrf
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="search" placeholder="Search by Task ID">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         {{-- <div class="d-flex  justify-content-between">
             <h1>Task List</h1>
             <a href="{{ route('tasks.create', $id) }}" class="btn btn-sm mb-4 btn-primary">
@@ -188,7 +201,9 @@
                                     </a> --}}
                                     <a href="{{ route('tasks.details', $item->id) }}"
                                         class="kanban-card-title text-decoration-none text-dark">
+
                                         {{ $item->title }}
+                                        <p>Ticket Number : {{ $item->id }}</p>
                                     </a>
                                     @if (illuminate\Support\Facades\Auth::user()->roles[0]->name == 'User')
                                         @if ($item->user_id == illuminate\Support\Facades\Auth::user()->id)
