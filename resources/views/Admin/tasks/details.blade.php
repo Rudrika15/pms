@@ -25,9 +25,12 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex justify-content-center align-items-center">
+                        <div class="d-flex justify-content-between  align-items-center">
                             <img src="{{ asset($tasks->attachment) }}" class="img-fluid" width="100"
                                 onclick="showPreview(this.src)" alt="" />
+                            <a href="{{ route('tasks.edit', $tasks->id) }}" class="btn btn-sm btn-primary">
+                                <i class="edit fa fa-edit"></i>
+                            </a>
                             {{-- <img src="{{ asset($tasks->attachment) }}" class="img-fluid" width="100" alt="" /> --}}
                         </div>
 
@@ -53,11 +56,9 @@
                         <div class="d-flex gap-2"> <b>Status : </b>
                             <p>{{ $tasks->status }}</p>
                         </div>
-                        <div class="d-flex gap-2">
-                            <a href="{{ route('tasks.edit', $tasks->id) }}" class="btn btn-sm btn-primary">
-                                <i class="edit fa fa-edit"></i>
-                            </a>
-                        </div>
+                        {{-- <div class="d-flex gap-2">
+                           
+                        </div> --}}
                     </div>
                 </div>
             </div>
