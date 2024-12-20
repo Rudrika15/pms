@@ -38,7 +38,7 @@
                         <select name="user_id" class="form-select" id="">
                             @foreach ($project_user as $item)
                                 @foreach ($item['users'] as $user)
-                                    <option value="{{ $item->id }}" {{ $task->user_id == $item->id ? 'selected' : '' }}>
+                                    <option value="{{ $user->id }}" @if ($task->user_id == $user->id) selected @endif>
                                         {{ $user->name }}</option>
                                 @endforeach
                             @endforeach

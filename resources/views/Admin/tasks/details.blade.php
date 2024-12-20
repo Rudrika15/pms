@@ -27,9 +27,11 @@
                         <div class="d-flex justify-content-between  align-items-center">
                             <img src="{{ asset($tasks->attachment) }}" class="img-fluid" width="100"
                                 onclick="showPreview(this.src)" alt="" />
-                            <a href="{{ route('tasks.edit', $tasks->id) }}" class="btn btn-sm btn-primary">
-                                <i class="edit fa fa-edit"></i>
-                            </a>
+                            @if (Auth::user()->roles[0]->name != 'User')
+                                <a href="{{ route('tasks.edit', $tasks->id) }}" class="btn btn-sm btn-primary">
+                                    <i class="edit fa fa-edit"></i>
+                                </a>
+                            @endif
                             {{-- <img src="{{ asset($tasks->attachment) }}" class="img-fluid" width="100" alt="" /> --}}
                         </div>
 
