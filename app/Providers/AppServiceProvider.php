@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\CheckRole;
 use Illuminate\Support\Facades\View;
 use App\Models\PmsProject;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        View::share('projects', PmsProject::all());
+        View::share('projects', PmsProject::where('status', 'active')
+            ->orderBy('id', 'desc')
+            ->get());
+        Route::aliasMiddleware('role.notuser', \App\Http\Middleware\CheckRole::class);
     }
 }

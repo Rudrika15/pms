@@ -3,36 +3,35 @@
     <div class="container">
         <h1>Add Project</h1>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
         <form action="{{ route('project.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="">Title</label>
-                <input required type="text" class="form-control" name="title">
+                <input type="text" value="{{ old('title') }}" class="form-control" name="title">
+                @error('title')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="">Details</label>
-                <input required type="text" class="form-control" name="detail">
+                <textarea cols="30" rows="5" class="form-control summernote" name="detail">{{ old('detail') }}</textarea>
+                @error('detail')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="mb-3">
-                <label for="">Git link</label>
-                <input required type="text" class="form-control" name="git_link">
+                <label for="">Links</label>
+                <textarea cols="30" rows="5" class="form-control summernote" name="git_link">{{ old('git_link') }}</textarea>
             </div>
 
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="">Status</label>
-                <input required type="text" class="form-control" name="status">
-            </div>
+               <select name="status" class="form-control" id="">
+                   <option value="active">Active</option>
+                   <option value="inactive">Completed</option>
+               </select>
+            </div> --}}
 
             <button type="submit" class="btn btn-primary mt-3">ADD</button>
 

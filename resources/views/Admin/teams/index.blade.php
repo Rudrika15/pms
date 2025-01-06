@@ -2,50 +2,61 @@
 
 @section('content')
     <div class="container">
-        <h1>Team List</h1>
-        <a href="{{ route('teams.create') }}" class="btn btn-primary mb-3 " style="float: right">Add Team</a>
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+        {{-- <div class="d-flex justify-content-between">
+            <h1>Team List</h1>
+            @if (Auth::user()->role != 'user')
+                <a href="{{ route('teams.create') }}" class="btn btn-sm btn-primary mb-3 " style="float: right">Add Team</a>
+            @endif
+        </div> --}}
+        <div class="page-header">
+            <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                    <i class="mdi mdi-account-group"></i>
+                </span>
+                Team List
+            </h3>
+            @if (Auth::user()->role != 'user')
+                <a href="{{ route('teams.create') }}" class="btn btn-sm btn-primary mb-3 " style="float: right">Add Team</a>
+            @endif
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Project Name</th>
+                            <th>User Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($teams as $team)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $team->title }}</td>
+                                <td>
+                                    @foreach ($team->teams as $item)
+                                        <span class="bg-primary p-2 rounded-pill text-white">
+                                            {{ explode(' ', $item->user->name)[0] }} &nbsp;
+                                            @if (Auth::user()->roles[0]->name != 'User')
+                                                <a href="javascript:void(0);"
+                                                    data-url="{{ route('teams.destroy', $item->id) }}"
+                                                    class="text-light text-decoration-none delete-button">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            @endif
+                                        </span>
+                                        &nbsp;
+                                    @endforeach
+                                </td>
+                                <td>
+                                    <a href="{{ route('teams.edit', $team->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-        @endif
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Project Name</th>
-                    <th>User Name</th>
-                    {{-- <th>Actions</th> --}}
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($teams as $team)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $team->title }}</td>
-                        <td>
-                            @foreach ($team->teams as $item)
-                                <span class="bg-primary p-2 rounded-pill text-white">
-                                    {{ $item->user->name }} &nbsp;
-                                    <a href="{{ route('teams.destroy', $item->id) }}"
-                                        onclick="return confirm('Do you want to delete it ')" class="text-light text-decoration-none">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </span>
-                                &nbsp;
-                            @endforeach
-                        </td>
-
-                        {{-- @foreach ($team->project as $item)
-                            <td>
-                                @if ($projectid == $team->project_id)
-                                    {{ $team->user->name }}
-                                @endif
-                            </td>
-                        @endforeach --}}
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        </div>
     @endsection

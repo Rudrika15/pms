@@ -2545,7 +2545,8 @@
     --bs-body-font-weight: 400;
     --bs-body-line-height: 1.5;
     --bs-body-color: #343a40;
-    --bs-body-bg: #fff;
+    /* --bs-body-bg: #fff; */
+    --bs-body-bg: #0000 !important;
 }
 
 *,
@@ -2572,6 +2573,24 @@ body {
     background-color: var(--bs-body-bg);
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+/* webkit scroll bar for whole project where the scroll is come then show one scrollbar]
+ */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #f46613;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 hr {
@@ -6092,8 +6111,8 @@ fieldset:disabled .btn {
 .btn-primary.active,
 .show > .btn-primary.dropdown-toggle {
     color: #000;
-    background-color: #c58aff;
-    border-color: #bd7cff;
+    background-color: #ff6600;
+    border-color: #000;
 }
 
 .btn-check:checked + .btn-primary:focus,
@@ -7495,6 +7514,7 @@ fieldset:disabled .btn {
     padding-bottom: 0.3125rem;
     margin-right: 1rem;
     font-size: 1.25rem;
+    height: 30px !important;
     text-decoration: none;
     white-space: nowrap;
 }
@@ -9384,7 +9404,7 @@ fieldset:disabled .btn {
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
     outline: 0;
 }
 
@@ -18655,10 +18675,10 @@ code {
         linear,
         left top,
         right top,
-        from(#da8cff),
+        from(#ff6600),
         to(#4c4b4b)
     );
-    background: linear-gradient(to right, #da8cff, #4c4b4b);
+    background: linear-gradient(to right, #ff6600, #4c4b4b);
     border: 0;
     -webkit-transition: opacity 0.3s ease;
     transition: opacity 0.3s ease;
@@ -20808,9 +20828,9 @@ dl li {
 .navbar .navbar-brand-wrapper .navbar-brand img {
     width: calc(260px - 120px);
     max-width: 100%;
-    height: 28px;
+    /* height: 28px; */
     margin: auto;
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini {
@@ -21761,7 +21781,7 @@ dl li {
 .sidebar .nav .nav-item .nav-link .menu-title {
     color: inherit;
     display: inline-block;
-    font-size: 0.875rem;
+    font-size: 16px;
     line-height: 1;
     vertical-align: middle;
 }
@@ -21868,7 +21888,8 @@ dl li {
     color: #888;
     padding: 0.75rem 2rem 0.75rem 2rem;
     position: relative;
-    font-size: 0.8125rem;
+    font-size: 14px;
+    font-weight: bold;
     line-height: 1;
     height: auto;
     border-top: 0;
@@ -22190,6 +22211,15 @@ dl li {
 
 .content-wrapper {
     background: #f2edf3;
+    padding: 2.75rem 2.25rem;
+    width: 100%;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+.content-wrapperLogin {
+    background: linear-gradient(to bottom, #ff6600, #5b5d5c);
     padding: 2.75rem 2.25rem;
     width: 100%;
     -webkit-box-flex: 1;

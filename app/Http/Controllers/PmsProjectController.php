@@ -14,19 +14,24 @@ class PmsProjectController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string',
+            'detail' => 'required|string',
+        ]);
+
         $PmsProject = new PmsProject();
         $PmsProject->title = $request->title;
         $PmsProject->detail = $request->detail;
         $PmsProject->git_link = $request->git_link;
-        $PmsProject->status = $request->status;
+        $PmsProject->status = "active";
         $PmsProject->save();
 
-        return redirect()->route('projects.index')->with('success', 'Projcet Added Successfully');
+        return redirect()->route('tasks.index', $PmsProject->id)->with('success', 'Projcet Added Successfully');
     }
 
     public function index()
     {
-        $project = PmsProject::all();
+        $project = PmsProject::orderBy('id', 'desc')->get();
         return \view('admin.project.index', \compact('project'));
     }
 
@@ -38,6 +43,10 @@ class PmsProjectController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required|string',
+            'detail' => 'required|string',
+        ]);
 
         $PmsProject = PmsProject::findOrFail($id);
 
